@@ -1,8 +1,9 @@
 # lib/cli.py
 
+
 from helpers import (
     exit_program,
-    list_owners,
+    list_owners
 )
 
 
@@ -43,11 +44,10 @@ def owner_menu():
             print("Invalid choice")
 
 def owner_options():
-    print("Owner Please selecte an option:")
+    print("Owner, Please selecte an option:")
     print("0. Back to main menu")
     print("1. existing owner")
     print("2. create new owner")
-
 
 
 if __name__ == "__main__":

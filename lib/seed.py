@@ -9,6 +9,8 @@ def seed_database():
 
     # Create seed data
     owner1 = Owner.create("John")
+    owner2 = Owner.create("Anne")
+    owner3 = Owner.create('Bob')
 
 
 seed_database()

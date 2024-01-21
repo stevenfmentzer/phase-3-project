@@ -8,19 +8,13 @@ Owner.drop_table()
 Owner.create_table()
 
 
+Owner.drop_table()
+Owner.create_table()
+
+    # Create seed data
 owner1 = Owner.create("John")
-print(owner1)
 owner2 = Owner.create("Anne")
-print(owner2)
-
-owner1.name = 'John'
-owner1.update()
-
-owner2.delete()
-
-
-
-
+owner3 = Owner.create('Bob')
 
 
 import ipdb

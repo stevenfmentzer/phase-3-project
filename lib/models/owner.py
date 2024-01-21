@@ -2,6 +2,8 @@
 from models.__init__ import CURSOR, CONN
 
 class Owner:
+    all = {}
+
 
     def __init__(self, name, id=None):
         self.name = name
@@ -57,6 +59,8 @@ class Owner:
         CONN.commit()
 
         self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
 
     @classmethod
     def create(cls, name):
@@ -78,14 +82,23 @@ class Owner:
     
 
     def delete(self):
-        """Delete the table row corresponding to the current Owner instance"""
+        """Delete the table row corresponding to the current Department instance,
+        delete the dictionary entry, and reassign id attribute"""
+
+
         sql = """
-            DELETE FROM owners
+            DELETE FROM departments
             WHERE id = ?
         """
 
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
+
+        # Delete the dictionary entry using id as the key
+        del type(self).all[self.id]
+
+        # Set the id to None
+        self.id = None
 
     @classmethod
     def get_all(cls):
@@ -98,3 +111,43 @@ class Owner:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Owner object having the attribute values from the table row."""
+
+        # Check the dictionary for an existing instance using the row's primary key
+        owner = cls.all.get(row[0])
+        if owner:
+            # ensure attributes match row values in case local object was modified
+            owner.name = row[1]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            owner = cls(row[1])
+            owner.id = row[0]
+            cls.all[owner.id] = owner
+        return owner
+
+    @classmethod
+    def find_by_id(cls, id):
+        """Return a Owner object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM owners
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_name(cls, name):
+        """Return a Owner object corresponding to first table row matching specified name"""
+        sql = """
+            SELECT *
+            FROM owners
+            WHERE name is ?
+        """
+
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None
