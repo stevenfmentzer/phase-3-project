@@ -9,6 +9,19 @@ class Owner:
 
     def __repr__(self):
         return f"<Owner {self.id}: {self.name}>"
+    
+
+    @property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, name):
+        if isinstance(name, str) and len(name):
+            self._name = name
+
+        else:
+            raise ValueError("name must be a non empty string")
+
 
     @classmethod
     def create_table(cls):
@@ -73,3 +86,15 @@ class Owner:
 
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a Owner object per row in the table"""
+        sql = """
+            SELECT *
+            FROM owners
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+
+        return [cls.instance_from_db(row) for row in rows]
