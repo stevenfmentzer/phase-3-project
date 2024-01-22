@@ -12,6 +12,13 @@ def list_owners():
     for owner in owners:
         print(owner)
 
+def create_owner():
+    name = input("Enter the owner's name: ")
+    try:
+        owner = Owner.create(name)
+        print(f'Success: {owner}')
+    except Exception as exc:
+        print("Error creating owner: ", exc)
 
 
 def exit_program():

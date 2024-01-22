@@ -3,7 +3,8 @@
 
 from helpers import (
     exit_program,
-    list_owners
+    list_owners,
+    create_owner
 )
 
 
@@ -36,10 +37,10 @@ def owner_menu():
         if choice == "0":
             main_menu()
             break
-        elif choice == "1":
+        elif choice == "1":        # no need to show list of owners?
             list_owners()
         elif choice == "2":
-            pass
+            create_owner()
         else:
             print("Invalid choice")
 
