@@ -19,6 +19,10 @@ def create_owner():
     except Exception as exc:
         print("Error creating owner: ", exc)
 
+def get_owner_name_by_id(owner_id):
+    owner = Owner.find_by_id(owner_id)
+    return owner.name if owner else None
+
 
 def exit_program():
     print("Goodbye!")

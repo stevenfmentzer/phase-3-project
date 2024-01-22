@@ -7,7 +7,7 @@ from models.owner import Owner
 
 Owner.drop_table()
 Owner.create_table()
-ipdb.set_trace()
+# ipdb.set_trace()
 
 
 
@@ -16,10 +16,11 @@ Owner.create_table()
 
     # Create seed data
 owner1 = Owner.create("John")
-ipdb.set_trace()
 
 owner2 = Owner.create("Anne")
 owner3 = Owner.create('Bob')
+ipdb.set_trace()
+
 
 
 # import ipdb

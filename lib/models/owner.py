@@ -68,6 +68,7 @@ class Owner:
         owner = cls(name)
         owner.save()
         return owner
+    #owner is the instance, returning it
     
     
     def update(self):
