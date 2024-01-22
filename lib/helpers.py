@@ -6,7 +6,6 @@ def helper_1():
 
 
 
-
 def list_owners():
     owners = Owner.get_all()
     for owner in owners:

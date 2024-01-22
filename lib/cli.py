@@ -38,7 +38,10 @@ def owner_menu():
             main_menu()
             break
         elif choice == "1":        # no need to show list of owners?
-            list_owners()
+            # list_owners()
+            select_existing_owner()
+
+            # break
         elif choice == "2":
             create_owner()
         else:
@@ -49,6 +52,15 @@ def owner_options():
     print("0. Back to main menu")
     print("1. existing owner")
     print("2. create new owner")
+
+def select_existing_owner():
+    print("Select an existing owner:")
+    list_owners()
+    
+    owner_id = input("Enter the ID of the owner you want to choose: ")
+
+
+
 
 
 if __name__ == "__main__":
