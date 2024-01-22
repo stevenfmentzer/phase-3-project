@@ -54,7 +54,7 @@ def owner_options():
     print("2. create new owner")
 
 def select_existing_owner():
-    print("Select an existing owner:")
+    print("Welcome Owner! Select an existing owner:")
     list_owners()
     
     owner_id = input("Enter the ID of the owner you want to choose: ")
