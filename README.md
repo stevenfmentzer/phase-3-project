@@ -34,6 +34,7 @@ View draw.io file
 ### Art Class Functions
 - get_all_art()
 ### Exhibition Class Functions
+- get_all_exhibition()
 - get_exhibition_by_id()
 - create_exhibition(status = false)
 ### Request Class Functions
