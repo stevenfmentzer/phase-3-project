@@ -10,6 +10,7 @@ An interface to quickly design and schedule art exhibitions and track an artwork
 - Art 
 - Museum
 - Exhibition
+- Request
 
 ## Domain Model Table
 View draw.io file
