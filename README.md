@@ -10,13 +10,14 @@ An interface to quickly design and schedule art exhibitions and track an artwork
 - Art 
 - Museum
 - Exhibition
+- Request
 
 ## Domain Model Table
 View draw.io file
 
-## CRUD 
+## CRUD rough idea
 - Create: 
-    - User 'Role' objects as 'Museum' or 'Owner'
+    - User objects as 'Museum' or 'Owner'
     - 'Museum's can create new 'Exhibition's
 - Read: 
     - 'Musuem' and 'Owner' can access data on exhibtions and art objects 
@@ -24,45 +25,39 @@ View draw.io file
     - 'Musuem' and 'Owner' change dates on exhibtions
     - 'Owner' can change the art value
 - Delete: 
-    - Cancel an exhibition
-## Functionality
-1. The user chooses their role: Owner, Musuem.
-2. Choose from existing user or make a new one.
-3. Interact with data TBD
+    - Delete an artwork
+
+## Museum User Functionality:
+
+### Museum Class Functions
+- get_all_museum()
+- create_new_museum()
+### Art Class Functions
+- get_all_art()
+### Exhibition Class Functions
+- get_all_exhibition()
+- get_exhibition_by_id()
+- create_exhibition(status = false)
+### Request Class Functions
+- get_all_requests()
+- create_request(start_date, end_date)
 
 
-## Extra Functions
-Musuem:
-- Request art for an exhibtion (start_date & end_date).
-- Create exhibitions with multiple artworks
-- Get a list of all exhibitions museum
-- Get a list of all artwroks in museum
+## Owner User Functionality:
 
+### Owner Class Functions
+- get_all_owner()
+- create_new_owner()
 
-Owner:
-- Approve loan requests.
-- View their art object data
-- Get art location 
-- Get number of times its been shown
+### Exhibition Class Functions
+- get_exhibitions()
 
----
+### Request Class Functions
+- show_requests()
+- approve_request()
+    check all other requests for exhibition. If all are approved staus == True or false, and at least 1 is true. set exhibitions status to true.  
+- deny_request()
 
-## Files 
-### cli.py
-
-### helpers.py
-
-## What Goes into a README?
-
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
-
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
-
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
+### Art Class Functions
+- add_new_art()
+- delete_art()
