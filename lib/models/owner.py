@@ -83,12 +83,12 @@ class Owner:
     
 
     def delete(self):
-        """Delete the table row corresponding to the current Department instance,
+        """Delete the table row corresponding to the current Owner instance,
         delete the dictionary entry, and reassign id attribute"""
 
 
         sql = """
-            DELETE FROM departments
+            DELETE FROM owners
             WHERE id = ?
         """
 
@@ -152,3 +152,18 @@ class Owner:
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+
+    def arts(self):
+        """Return list of arts associated with current owner"""
+        from art import Art
+        sql = """
+            SELECT * FROM arts
+            WHERE owner_id = ?
+        """
+        CURSOR.execute(sql, (self.id,),)
+
+        rows = CURSOR.fetchall()
+        return [
+            Art.instance_from_db(row) for row in rows
+        ]

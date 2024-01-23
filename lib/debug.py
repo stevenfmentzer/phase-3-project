@@ -19,6 +19,8 @@ owner1 = Owner.create("John")
 
 owner2 = Owner.create("Anne")
 owner3 = Owner.create('Bob')
+
+# owners  = CURSOR.execute('SELECT * FROM owners') - use to query owners when new ones added
 ipdb.set_trace()
 
 
