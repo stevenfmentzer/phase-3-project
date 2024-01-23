@@ -6,7 +6,8 @@ from helpers import (
     list_owners,
     create_owner,
     get_owner_name_by_id,
-    list_owner_arts
+    list_owner_arts,
+    add_new_art
 )
 
 
@@ -96,6 +97,11 @@ def select_existing_owner():
     existing_owner_menu(owner_name, owner_id)
 
 def manage_art_options(owner_id):
+    from models.owner import Owner
+    owner = Owner.find_by_id(owner_id)
+    owner_name = owner.name
+
+
     while True:
         print("0. Back to main menu")
         print("1. View all arts")
@@ -110,8 +116,12 @@ def manage_art_options(owner_id):
         elif choice == "1":
             list_owner_arts(owner_id)
         elif choice == "2":
-            # Add new art logic
-            pass
+            print(owner.name, owner_id)
+
+            add_new_art(owner_id, owner_name)
+
+            
+            
         elif choice == "3":
             # Delete art logic
             pass

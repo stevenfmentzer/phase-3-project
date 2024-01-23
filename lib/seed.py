@@ -18,6 +18,7 @@ def seed_database():
     art1 = Art.create(1, 'Mona Lisa', "Da Vinci", 400000)
     art2 = Art.create(2, 'Starry Night', "Van Gogh", 130090)
     
+    
 
 
 seed_database()
