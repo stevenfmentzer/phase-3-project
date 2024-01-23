@@ -6,8 +6,8 @@ from helpers import (
     list_owners,
     create_owner,
     get_owner_name_by_id,
-    list_owner_arts,
-    add_new_art
+    list_owner_arts, 
+    get_exhibition_by_name
 )
 
 
@@ -22,6 +22,8 @@ def main():
             # break
         elif choice == "2":
             pass
+        elif choice == "3":
+            get_exhibition_by_name()
         else:
             print("Invalid choice")
 
@@ -31,6 +33,7 @@ def main_menu():
     print("0. Exit the program")
     print("1. Owners")
     print("2. Museums")
+    print("3. By Exhibition by id")
             
 def owner_menu():
     print("Welcome, Owner!")

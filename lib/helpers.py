@@ -1,13 +1,13 @@
 # lib/helpers.py
 from models.owner import Owner
-from models.art import Art 
-import ipdb
+from models.art import Art
 
 def helper_1():
     print("Performing useful function#1.")
 
 
-
+##Owner Class
+    
 def list_owners():
     owners = Owner.get_all()
     for owner in owners:
@@ -45,7 +45,6 @@ def add_new_art(owner_id, owner_name):
 
         art = Art.create(owner_id, name, artist, cost_int)
         print(f"Art '{art.name}' added successfully!")
-
 
 
 
