@@ -125,6 +125,13 @@ class Request:
         self.id = None
 
     @classmethod
+    def create(cls, art_id, owner_id, exebition_id, approved):
+        # Initialize a new request instance and save it into the DB
+        request = cls(art_id, owner_id, exebition_id, approved)
+        request.save()
+        return request
+
+    @classmethod
     def find_by_id(cls, id):
         # Return request by id
         sql = """
