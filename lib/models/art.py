@@ -192,6 +192,11 @@ class Art:
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
+    def find_owner(self):
+        owner_name = Owner.find_by_id(self.owner_id).name
+        return owner_name
+
+    
 # ipdb.set_trace()
 
     

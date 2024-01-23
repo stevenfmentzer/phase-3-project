@@ -17,6 +17,9 @@ owner3 = Owner.create('Bob')
 
 
 art1 = Art.create(1, 'art name', "artist", 450000)
+art2 = Art.create(2, 'Starry Night', "Van Gogh", 130090)
+art3= Art.create(1, 'art2', 'artist', 2000 )
+
 
 
 # owners  = CURSOR.execute('SELECT * FROM owners') - use to query owners when new ones added
