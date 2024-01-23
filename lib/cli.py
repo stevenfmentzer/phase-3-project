@@ -7,6 +7,7 @@ from helpers import (
     create_owner,
     get_owner_name_by_id,
     list_owner_arts, 
+    add_new_art,
     get_exhibition_by_name
 )
 
