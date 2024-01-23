@@ -7,6 +7,8 @@ from models.art import Art
 def seed_database():
     Owner.drop_table()
     Owner.create_table()
+    Art.drop_table()
+    Art.create_table()
 
     # Create seed data
     owner1 = Owner.create("John")

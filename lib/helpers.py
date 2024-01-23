@@ -29,6 +29,8 @@ def list_owner_arts(owner_id):
     owner_arts = owner.arts()
     for art in owner_arts:
         print(art)
+    if not owner_arts:
+        print('Sorry, you have no arts to view!')
 
 
 

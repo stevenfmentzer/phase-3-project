@@ -18,7 +18,7 @@ def main():
             exit_program()
         elif choice == "1":
             owner_menu()
-            break
+            # break
         elif choice == "2":
             pass
         else:
