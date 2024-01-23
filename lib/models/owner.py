@@ -156,7 +156,7 @@ class Owner:
 
     def arts(self):
         """Return list of arts associated with current owner"""
-        from art import Art
+        from models.art import Art
         sql = """
             SELECT * FROM arts
             WHERE owner_id = ?

@@ -1,5 +1,6 @@
 # lib/helpers.py
 from models.owner import Owner
+from models.art import Art
 
 def helper_1():
     print("Performing useful function#1.")
@@ -22,6 +23,15 @@ def create_owner():
 def get_owner_name_by_id(owner_id):
     owner = Owner.find_by_id(owner_id)
     return owner.name if owner else None
+
+def list_owner_arts(owner_id):
+    owner = Owner.find_by_id(owner_id)
+    owner_arts = owner.arts()
+    for art in owner_arts:
+        print(art)
+
+
+
 
 
 def exit_program():
