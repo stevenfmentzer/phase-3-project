@@ -26,29 +26,14 @@ def main():
         elif choice == "1":
             owner_menu()
             # break
-        elif choice == "2":
-            pass
-        elif choice == "3":
-            get_exhibition_by_name()
-        elif choice == "4":
-            create_exhibition()
-        elif choice == "5":
-            get_all_exhibition()
-        elif choice == "6":
-            update_exhibition_menu()
         else:
             print("Invalid choice")
 
             
 def main_menu():
     print("Please select an option:")
-    print("0. Exit the program")
     print("1. Owners")
     print("2. Museums")
-    print("3. By Exhibition by name")
-    print("4: Create Exhibit")
-    print("5: Get all Exhibits")
-    print("6: Update an Exhibition")
             
 def owner_menu():
     print("Welcome, Owner!")

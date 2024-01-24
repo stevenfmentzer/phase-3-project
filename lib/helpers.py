@@ -6,7 +6,6 @@ from models.art import Art
 def helper_1():
     print("Performing useful function#1.")
 
-
 ##Owner Class
     
 def list_owners():
