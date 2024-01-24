@@ -3,7 +3,7 @@ from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
 from models.art import Art
-from models.art import Request
+from models.request import Request
 def helper_1():
     print("Performing useful function#1.")
 
