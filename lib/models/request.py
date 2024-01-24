@@ -1,17 +1,17 @@
 from models.__init__ import CURSOR, CONN
 from models.owner import Owner
 from models.art import Art
-from models.exebition import Exebition
+from models.exhibition import Exhibition
 
 
 class Request:
     all = []
 
-    def __init__(self, art_id, owner_id, exebition_id, approved, id=None):
+    def __init__(self, art_id, owner_id, exhibition_name, approved, id=None):
         self.id = id
         self.art_id = art_id
         self.owner_id = owner_id
-        self.exebition_id = exebition_id
+        self.exhibition_iname = exhibition_name
         self.approved
 
     @property
@@ -37,15 +37,17 @@ class Request:
             raise ValueError("owner_id must reference an owner in the database")
 
     @property
-    def exebition(self):
-        return self._exebition_id
+    def exhibition(self):
+        return self._exhibition_name
 
-    @exebition.setter
-    def exebition(self, exebition_id):
-        if isinstance(exebition_id, int) and Exebition.find_by_id(exebition_id):
-            self._exebition_id = exebition_id
+    @exhibition.setter
+    def exhibition(self, exhibition_name):
+        if isinstance(exhibition_name, str) and Exhibition.get_by_name(exhibition_name):
+            self._exhibition_name = exhibition_name
         else:
-            raise ValueError("exebition_id must reference an exebition in the database")
+            raise ValueError(
+                "exhibition_name must reference an exhibition in the database"
+            )
 
     @property
     def approved(self):
@@ -66,7 +68,7 @@ class Request:
     id INTEGER PRIMARY KEY,
     art_id INTEGER,
     owner_id INTEGER,
-    exebition TEXT,
+    exhibition TEXT,
     approved BOOLEAN
     """
         CURSOR.execute(sql)
@@ -83,12 +85,12 @@ class Request:
 
     def save(self):
         sql = """
-    INSERT INTO requests (art_id, owner_id, exebition_id, approved)
+    INSERT INTO requests (art_id, owner_id, exhibition_name, approved)
     VALUES (?, ?, ?, ?)
     """
 
         CURSOR.execute(
-            sql, (self.art_id, self.owner_id, self.exebition_id, self.approved)
+            sql, (self.art_id, self.owner_id, self.exhibition_name, self.approved)
         )
         CONN.commit()
 
@@ -99,12 +101,12 @@ class Request:
         # Update the request in DB
         sql = """
     UPDATE requests
-    SET art_id = ?, owner_id = ?, exebition_id = ?, approved = ?
+    SET art_id = ?, owner_id = ?, exhibition_name = ?, approved = ?
     WHERE id = ?
     """
         CURSOR.execute(
             sql,
-            (self.art_id, self.owner_id, self.exebition_id, self.approved, self.id),
+            (self.art_id, self.owner_id, self.exhibition_name, self.approved, self.id),
         )
         CONN.commit()
 
@@ -125,9 +127,9 @@ class Request:
         self.id = None
 
     @classmethod
-    def create(cls, art_id, owner_id, exebition_id, approved):
+    def create(cls, art_id, owner_id, exhibition_name, approved):
         # Initialize a new request instance and save it into the DB
-        request = cls(art_id, owner_id, exebition_id, approved)
+        request = cls(art_id, owner_id, exhibition_name, approved)
         request.save()
         return request
 
@@ -142,5 +144,3 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
-    
