@@ -14,6 +14,9 @@ class Request:
         self.exhibition_name = exhibition_name
         self.approved = False
 
+    def __repr__(self):
+        return f"<Request {self.id}: Art {self.art_id.name}, Owner {self.owner_id.name}, Exhibition {self.exebition_id.name}, Approved {self.approved}>"
+
     @property
     def art(self):
         return self._art_id
