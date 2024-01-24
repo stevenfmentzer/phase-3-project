@@ -38,13 +38,9 @@ def seed_database():
     art1 = Art.create(1, 'Mona Lisa', "Da Vinci", 400000)
     art2 = Art.create(2, 'Starry Night', "Van Gogh", 130090)
 
-    request1 = Request(art_id=1, owner_id=1, exebition_id=1, approved=True)
+    request1 = Request(art_id=1, owner_id=1, exhibition_name=1, approved=True)
 
 
     
-    
-
-
-
 seed_database()
 print("Seeded database")

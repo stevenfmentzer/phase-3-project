@@ -15,7 +15,7 @@ class Request:
         self.approved = approved
 
     def __repr__(self):
-        return f"<Request {self.id}: Art {self.art_id.name}, Owner {self.owner_id.name}, Exhibition {self.exebition_id.name}, Approved {self.approved}>"
+        return f"<Request {self.id}: Art {self.art_id.name}, Owner {self.owner_id.name}, Exhibition {self.exhibition_id.name}, Approved {self.approved}>"
 
     @property
     def art(self):
@@ -71,7 +71,7 @@ class Request:
     id INTEGER PRIMARY KEY,
     art_id INTEGER,
     owner_id INTEGER,
-    exebition TEXT,
+    exhibition_name TEXT,
     approved INTEGER, 
     FOREIGN KEY (art_id) REFERENCES arts(id),
     FOREIGN KEY (owner_id) REFERENCES owners(id)
