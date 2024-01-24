@@ -11,7 +11,7 @@ class Request:
         self.id = id
         self.art_id = art_id
         self.owner_id = owner_id
-        self.exebition_id = exebition_id
+        self.exhibition_name = exhibition_name
         self.approved = approved
 
     def __repr__(self):
