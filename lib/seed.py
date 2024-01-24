@@ -4,14 +4,14 @@ from models.__init__ import CONN, CURSOR
 from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
-from models.exhibition import Art
-from models.exhibition import Request
+from models.art import Art
+from models.request import Request
 from unittest.mock import Mock
 
 
 # Usage in testing
-fake_art_instance = Art(id=1, name="Fake Artwork")
-fake_art_instance2 = Art(id=2, name="Fake Artwork")
+# fake_art_instance = Art(id=1, name="Fake Artwork")
+# fake_art_instance2 = Art(id=2, name="Fake Artwork")
 fake_request_instance = Request(id=1, description="Fake Request")
 fake_request_instance2 = Request(id=2, description="Fake Request")
 
@@ -22,6 +22,8 @@ def seed_database():
     Museum.create_table()
     Exhibition.drop_table()
     Exhibition.create_table()
+    Request.drop_table()
+    Request.create_table()
 
     # Create seed data
     owner1 = Owner.create("John")
@@ -37,6 +39,10 @@ def seed_database():
     
     art1 = Art.create(1, 'Mona Lisa', "Da Vinci", 400000)
     art2 = Art.create(2, 'Starry Night', "Van Gogh", 130090)
+
+    request1 = Request(art_id=1, owner_id=1, exebition_id=1, approved=True)
+
+
     
     
 

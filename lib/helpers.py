@@ -3,6 +3,7 @@ from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
 from models.art import Art
+from models.request import Request
 def helper_1():
     print("Performing useful function#1.")
 
@@ -135,6 +136,11 @@ def update_exhibition_dates():
 def update_exhibition_status():
     pass
     
+
+def get_all_request():
+    requests = Request.get_all()
+    for request in requests:
+        print(request)
 
 
 def exit_program():

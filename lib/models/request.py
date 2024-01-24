@@ -1,7 +1,7 @@
 from models.__init__ import CURSOR, CONN
 from models.owner import Owner
 from models.art import Art
-from models.exebition import Exebition
+from models.exhibition import Exhibition
 
 
 class Request:
@@ -12,7 +12,10 @@ class Request:
         self.art_id = art_id
         self.owner_id = owner_id
         self.exebition_id = exebition_id
-        self.approved
+        self.approved = approved
+
+    def __repr__(self):
+        return f"<Request {self.id}: Art {self.art_id.name}, Owner {self.owner_id.name}, Exhibition {self.exebition_id.name}, Approved {self.approved}>"
 
     @property
     def art(self):
@@ -142,5 +145,18 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
 
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a Request object per row in the table"""
+        sql = """
+            SELECT *
+            FROM requests
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+        requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        return requests
     
