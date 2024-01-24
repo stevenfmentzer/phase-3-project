@@ -47,6 +47,14 @@ def add_new_art(owner_id, owner_name):
         art = Art.create(owner_id, name, artist, cost_int)
         print(f"Art '{art.name}' added successfully!")
 
+def delete_art():
+    id = input("Enter the art's id: ")
+    if art := Art.find_by_id(id):
+        art.delete()
+        print(f'Art {id} deleted!')
+    else:
+        print(f'Art {id} not found')
+
 ## Art Class
         
 def get_all_art():
@@ -58,6 +66,8 @@ def get_all_museum():
     museums = Museum.get_all()
     for museum in museums:
         print(museum)
+    # return Museum.get_all()
+
 
 def create_new_museum():
     name = input("Enter the museum's name: ")

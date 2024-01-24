@@ -17,7 +17,8 @@ from helpers import (
     create_new_museum,
     get_all_request, 
     create_request, 
-    get_all_art
+    get_all_art, 
+    delete_art
 )
 
 # list structure:
@@ -73,6 +74,8 @@ def cli_2_owner_function():
         elif choice == "1":       
             # cli_3_owner_existing_function()
             cli_3_existing_owner_print()
+            
+
             break
 
         elif choice == "2":
@@ -89,27 +92,31 @@ def cli_2_museum_print():
 
 def cli_2_museum_function():
     print("Welcome, Museum!")
+    cli_2_museum_print()
+
     while True:
-        cli_2_museum_print()
         choice = input("> ")
 
         if choice == "0":
-            # cli_1_print()
             break
-        elif choice == "1":       
-            cli_3_existing_museum_print()
-            break
+        elif choice == "1": 
+            cli_5_museum_create_exhib_function()      
+            # cli_3_existing_museum_print()
+            
 
         elif choice == "2":
             create_new_museum()
             cli_3_existing_museum_print()
 
+
         else:
             print("Invalid choice")
+        
 
 def cli_3_existing_museum_print():
     print("Welcome Museum! Select an existing museum:")
     get_all_museum()
+   
     
 
 def cli_3_existing_owner_print():
@@ -155,12 +162,31 @@ def cli_5_owner_print(owner_id):
     owner = Owner.find_by_id(owner_id)
     owner_name = owner.name
 
-    print("0. Back to main menu")
-    print("1. View all arts")
-    print("2. Add new art")
-    print("3. delete art")
-    
+    while True:
+        print("0. Back to main menu")
+        print("1. View all arts")
+        print("2. Add new art")
+        print("3. delete art")
+        choice = input("> ")
 
+
+        if choice == "0":
+            break
+        elif choice == "1":
+            list_owner_arts(owner_id)
+            
+        elif choice == "2":
+            add_new_art(owner_id, owner_name)
+            list_owner_arts(owner_id)
+        elif choice == "3":
+            list_owner_arts(owner_id)
+            delete_art()
+            pass
+        else:
+            print("Invalid choice")
+
+    
+    
 
 
 def cli_3_existing_function(): 
