@@ -179,6 +179,17 @@ class Exhibition:
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod
+    def get_by_museum_id(cls, museum_id):
+        """ Return Exhibition object(s) with matching museum_id """
+        query = """
+            SELECT *
+            FROM exhibitions
+            WHERE museum_id = ?
+        """
+        rows = CURSOR.execute(query, (museum_id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows] if rows else None
+    
+    @classmethod
     def instance_from_db(cls, row):
         """Return an Exhibit object having the attribute values from the table row."""
 

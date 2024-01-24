@@ -17,7 +17,8 @@ from helpers import (
     create_new_museum,
     get_all_request, 
     create_request, 
-    get_all_art
+    get_all_art, 
+    get_requests_by_exhibition_name
 )
 
 # list structure:
@@ -222,7 +223,7 @@ def cli_5_museum_exhibition_list_function():
         choice = input("> ")
         # If choice is in range of options go to that choice
         if 0 < int(choice) <= len(exhibition_list):
-            cli_6_museum_manage_exhib_function(exhibition_list[choice-1])
+            cli_6_museum_manage_exhib_function(exhibition_list[int(choice)-1])
         # BACK
         elif choice =="0":
             cli_4_museum_function()
@@ -292,11 +293,11 @@ def cli_7_museum_new_request_print(arts):
 def cli_7_museum_new_request_function(exhibition_name):
     print("What artwork would you like to request?")
     arts = get_all_art()
-    cli_7_museum_new_request_function(arts)
+    cli_7_museum_new_request_print(arts)
     while True:
         choice = input("> ")
         if 0 < int(choice) <= len(arts):
-            create_request(exhibition_name, arts[choice-1])
+            create_request(exhibition_name, arts[int(choice)-1].id)
         # BACK
         elif choice == "0":
             cli_6_museum_manage_exhib_function(exhibition_name)
@@ -305,11 +306,22 @@ def cli_7_museum_new_request_function(exhibition_name):
 
 
 def cli_7_museum_list_requests_print(exhibition_name):
-    # LIST ALL REQUESTS
+    requests_list = get_requests_by_exhibition_name(exhibition_name)
+
+    print("ID\tArt ID\tOwner ID\tExhibition Name\tApproved")
+    for request in requests_list:
+        print(f"{request.id}\t{request.art_id}\t{request.owner_id}\t{request.exhibition_name}\t{request.approved}")
+
     print("0: back")
 
-def cli_7_museum_list_requests_function():
-    pass 
+def cli_7_museum_list_requests_function(exhibition_name):
+    cli_7_museum_list_requests_print(exhibition_name)
+    while True:
+        choice = input("> ")
+        if choice == "0":
+            cli_6_museum_manage_exhib_function(exhibition_name)
+        else: 
+            print("invalid choice")
 
 if __name__ == "__main__":
-    cli_1_function()
+    cli_4_museum_function()

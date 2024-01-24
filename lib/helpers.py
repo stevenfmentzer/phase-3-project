@@ -155,8 +155,15 @@ def get_all_request():
 def create_request(exhibition_name, art_id):
     # create(cls, art_id, owner_id, exebition_id, approved)
     owner_id = Art.find_by_id(art_id).owner_id
-    Request.create(art_id, owner_id, exhibition_name)
-    
+    Request.create(art_id, owner_id, exhibition_name, False)
+
+def get_requests_by_exhibition_name(exhibition_name):
+    exhibition = Exhibition.get_by_name(exhibition_name)
+    museum = Exhibition.get_by_museum_id(exhibition[0].musuem_id)
+    requests = Request.find_by_museum_id(museum)
+    return requests
+
+
 def exit_program():
     print("Goodbye!")
     exit()
