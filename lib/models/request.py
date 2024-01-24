@@ -146,7 +146,6 @@ class Request:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-<<<<<<< HEAD
 
 
     @classmethod
@@ -160,7 +159,6 @@ class Request:
         rows = CURSOR.execute(sql).fetchall()
         requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
         return requests
-=======
     @classmethod
     def find_by_museum_id(cls, id):
         # Return request by id
@@ -173,5 +171,4 @@ class Request:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
->>>>>>> 9a79501375a4f866b153158a10266ca5df23f74b
     
