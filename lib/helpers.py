@@ -1,5 +1,7 @@
 # lib/helpers.py
 from models.owner import Owner
+from models.museum import Museum
+from models.exhibition import Exhibition
 
 def helper_1():
     print("Performing useful function#1.")
@@ -33,8 +35,6 @@ def list_owner_arts(owner_id):
         print('Sorry, you have no arts to view!')
 
 
-
-
 ## Museum Class
         
 def get_all_museum():
@@ -53,50 +53,76 @@ def create_new_museum():
 ## Exhibition Class
         
 def get_all_exhibition():
-    exhibition = Exhibition.get_all()
-    for exhibition in exhibition:
-        print(exhibition)
+    exhibitions = Exhibition.get_all()
+    for exhibition in exhibitions:
+        print(exhibition.name)
 
 def create_exhibition(): 
-    exhibition = input("Enter the exhibition's name: ")
+    # Get input for exhibition details
+    name = input("Enter the exhibition's name: ")
+    art_id = int(input("Enter the art ID: "))
+    museum_id = int(input("Enter the museum ID: "))
+    start_date = input("Enter the start date (YYYY-MM-DD): ")
+    end_date = input("Enter the end date (YYYY-MM-DD): ")
+
+    # Create the exhibition with the provided details
     try:
-        exhibition = Exhibition.create(exhibition)
+        exhibition = Exhibition.create(name, art_id, museum_id, start_date, end_date)
         print(f'Success: {exhibition}')
     except Exception as exc:
         print("Error creating exhibition: ", exc)
 
 def get_exhibition_by_name():
-    name = input("Which exhibition do you want to look at?")
+    print("hello")
+    name = input("Which exhibition do you want to look at? ")
+    print(name)
     if isinstance(name, str):
+        print(f"{name}: has been checked and is a 'string'")
         try: 
-            exhibition = Exhibition.get_by_name(name)
-            print(f'Success: {exhibition}')
+            print("trying")
+            exhibitions = Exhibition.get_by_name(name)
+            print(exhibitions)
+            if exhibitions:
+                print(f'Exhibition Name: {exhibitions[0].name}')
+                print(f'Museum ID: {exhibitions[0].museum_id}')
+                print(f'Start Date: {exhibitions[0].start_date}')
+                print(f'End Date: {exhibitions[0].end_date}')
+            
+                for exhibition in exhibitions:
+                    print(f'Art ID: {exhibition.art_id}')
+            else:
+                print(f'No exhibition found with the name: {name}')
         except Exception as exc:
             print("Error finding exhibition: ", exc)
     else: 
-        raise TypeError("please choose an string")
+        raise TypeError("Please choose a string")
     
-# def get_all_art(exhibition_id):
-#     if isinstance(exhibition_id, int):
-#         try: 
-#             art_list = Exhibition.get_all_art(id)
-#             for art in art_list:
-#                 print(art)
-#         except Exception as exc:
-#             print("Error finding artworks: ", exc)
-#     else: 
-#         raise TypeError("please choose an integer")
+def update_exhibition_name():
+    name = input("Which exhibition do you want to update? ")
+    try:
+        exhibitions = Exhibition.get_by_name(name)
+        if exhibitions:
+            print(f'Exhibitions found with the name: {name}')
 
-# def get_all_requests(exhibition_id):
-#     if isinstance(exhibition_id, int):
-#         try: 
-#             request_list = Exhibition.get_all_requests(id)
-#             for request in request_list:
-#                 print(request)
-#         except Exception as exc:
-#             print("Error finding loan requests: ", exc)
-#     else: 
-#         raise TypeError("please choose an integer")
+            new_name = input("Enter the new name for the exhibition: ")
+
+            for exhibition in exhibitions:
+                exhibition.name = new_name
+                exhibition.update_by_name()
+
+            print(f'Exhibition Name updated to: {new_name} for all matching instances')
+        else:
+            print(f'No exhibition found with the name: {name}')
+    except Exception as exc:
+        print("Error updating exhibition name: ", exc)
+
+def update_exhibition_dates():
+    pass
+
+def update_exhibition_status():
+    pass
+    
+
 
 def exit_program():
     print("Goodbye!")
