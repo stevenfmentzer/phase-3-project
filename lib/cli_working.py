@@ -136,8 +136,9 @@ def cli_4_existing_owner_print():
 
 def cli_4_existing_owner_function(owner_name, owner_id):
     print(f"Welcome, {owner_name}! What would you like to do?")
+    cli_4_existing_owner_print()
+
     while True:
-        cli_4_existing_owner_print()
         choice = input("> ")
 
         if choice == "0":

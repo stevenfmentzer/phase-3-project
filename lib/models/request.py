@@ -1,21 +1,20 @@
 from models.__init__ import CURSOR, CONN
-from models.owner import Owner
 from models.art import Art
 from models.exhibition import Exhibition
 
 
 class Request:
-    all = []
+    all = {}
 
-    def __init__(self, art_id, owner_id, exhibition_name, approved, id=None):
+    def __init__(self, art_id, request_id, exhibition_name, approved, id=None):
         self.id = id
         self.art_id = art_id
-        self.owner_id = owner_id
+        self.request_id = request_id
         self.exhibition_name = exhibition_name
         self.approved = approved
 
     def __repr__(self):
-        return f"<Request {self.id}: Art {self.art_id.name}, Owner {self.owner_id.name}, Exhibition {self.exhibition_id.name}, Approved {self.approved}>"
+        return f"<Request {self.id}: {self.exhibition_name}, {self.approved}>"
 
     @property
     def art(self):
@@ -29,15 +28,15 @@ class Request:
             raise ValueError("art_id must reference an art in the database")
 
     @property
-    def owner(self):
-        return self._owner_id
+    def request(self):
+        return self._request_id
 
-    @owner.setter
-    def owner(self, owner_id):
-        if isinstance(owner_id, int) and Owner.find_by_id(owner_id):
-            self._owner_id = owner_id
+    @request.setter
+    def request(self, request_id):
+        if isinstance(request_id, int) and request.find_by_id(request_id):
+            self._request_id = request_id
         else:
-            raise ValueError("owner_id must reference an owner in the database")
+            raise ValueError("request_id must reference an request in the database")
 
     @property
     def exhibition(self):
@@ -70,11 +69,11 @@ class Request:
     CREATE TABLE IF NOT EXISTS requests (
     id INTEGER PRIMARY KEY,
     art_id INTEGER,
-    owner_id INTEGER,
+    request_id INTEGER,
     exhibition_name TEXT,
     approved INTEGER, 
     FOREIGN KEY (art_id) REFERENCES arts(id),
-    FOREIGN KEY (owner_id) REFERENCES owners(id)
+    FOREIGN KEY (request_id) REFERENCES requests(id)
     )
     """
         CURSOR.execute(sql)
@@ -91,12 +90,12 @@ class Request:
 
     def save(self):
         sql = """
-    INSERT INTO requests (art_id, owner_id, exhibition_name, approved)
+    INSERT INTO requests (art_id, request_id, exhibition_name, approved)
     VALUES (?, ?, ?, ?)
     """
 
         CURSOR.execute(
-            sql, (self.art_id, self.owner_id, self.exhibition_name, self.approved)
+            sql, (self.art_id, self.request_id, self.exhibition_name, self.approved)
         )
         CONN.commit()
 
@@ -107,12 +106,12 @@ class Request:
         # Update the request in DB
         sql = """
     UPDATE requests
-    SET art_id = ?, owner_id = ?, exhibition_name = ?, approved = ?
+    SET art_id = ?, request_id = ?, exhibition_name = ?, approved = ?
     WHERE id = ?
     """
         CURSOR.execute(
             sql,
-            (self.art_id, self.owner_id, self.exhibition_name, self.approved, self.id),
+            (self.art_id, self.request_id, self.exhibition_name, self.approved, self.id),
         )
         CONN.commit()
 
@@ -133,9 +132,9 @@ class Request:
         self.id = None
 
     @classmethod
-    def create(cls, art_id, owner_id, exhibition_name, approved):
+    def create(cls, art_id, request_id, exhibition_name, approved):
         # Initialize a new request instance and save it into the DB
-        request = cls(art_id, owner_id, exhibition_name, approved)
+        request = cls(art_id, request_id, exhibition_name, approved)
         request.save()
         return request
 
@@ -162,7 +161,7 @@ class Request:
         """
 
         rows = CURSOR.execute(sql).fetchall()
-        requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        requests = [cls(row[1], row[2], row[3], bool(row[4]), id=row[0]) for row in rows]
         return requests
     @classmethod
     def find_by_museum_id(cls, id):
@@ -176,17 +175,17 @@ class Request:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
-    @classmethod
-    def get_all(cls):
-        """Return a list containing a Request object per row in the table"""
-        sql = """
-            SELECT *
-            FROM requests
-        """
+    # @classmethod
+    # def get_all(cls):
+    #     """Return a list containing a Request object per row in the table"""
+    #     sql = """
+    #         SELECT *
+    #         FROM requests
+    #     """
 
-        rows = CURSOR.execute(sql).fetchall()
-        requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
-        return requests
+    #     rows = CURSOR.execute(sql).fetchall()
+    #     requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+    #     return requests
 
     @classmethod
     def find_by_museum_id(cls, id):
@@ -199,3 +198,22 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a request object having the attribute values from the table row."""
+
+        # Check the dictionary for an existing instance using the row's primary key
+        request = cls.all.get(row[0])
+        if request:
+            # ensure attributes match row values in case local object was modified
+            request.art_id = row[1]
+            request.request_id = row[2]
+            request.exhibition_name = row[3]
+            request.approved = bool(row[4])
+        else:
+        
+        # not in dictionary, create new instance and add to dictionary
+            request = cls(row[1], row[2], row[3], bool(row[4]), id=row[0])
+            cls.all[request.id] = request
+        return request
