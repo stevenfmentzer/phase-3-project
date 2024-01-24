@@ -12,7 +12,7 @@ class Request:
         self.art_id = art_id
         self.owner_id = owner_id
         self.exhibition_iname = exhibition_name
-        self.approved
+        self.approved = False
 
     @property
     def art(self):
@@ -135,6 +135,30 @@ class Request:
 
     @classmethod
     def find_by_id(cls, id):
+        # Return request by id
+        sql = """
+    SELECT *
+    FROM requests
+    WHERE id = ?
+    """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a Request object per row in the table"""
+        sql = """
+            SELECT *
+            FROM requests
+        """
+
+        rows = CURSOR.execute(sql).fetchall()
+        requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        return requests
+
+    @classmethod
+    def find_by_museum_id(cls, id):
         # Return request by id
         sql = """
     SELECT *
