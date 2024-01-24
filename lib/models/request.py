@@ -6,7 +6,7 @@ from models.exhibition import Exhibition
 class Request:
     all = {}
 
-    def __init__(self, art_id, request_id, exhibition_name, approved, id=None):
+    def __init__(self, art_id, owner_id, exhibition_name, approved=False, id=None):
         self.id = id
         self.art_id = art_id
         self.request_id = request_id
@@ -90,9 +90,9 @@ class Request:
 
     def save(self):
         sql = """
-    INSERT INTO requests (art_id, request_id, exhibition_name, approved)
-    VALUES (?, ?, ?, ?)
-    """
+            INSERT INTO requests (art_id, owner_id, exhibition_name, approved)
+            VALUES (?, ?, ?, ?)
+        """
 
         CURSOR.execute(
             sql, (self.art_id, self.request_id, self.exhibition_name, self.approved)
