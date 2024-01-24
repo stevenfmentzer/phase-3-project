@@ -11,7 +11,7 @@ class Request:
         self.id = id
         self.art_id = art_id
         self.owner_id = owner_id
-        self.exhibition_iname = exhibition_name
+        self.exhibition_name = exhibition_name
         self.approved = False
 
     @property
