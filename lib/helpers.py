@@ -2,7 +2,7 @@
 from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
-
+from models.art import Art
 def helper_1():
     print("Performing useful function#1.")
 
@@ -33,6 +33,20 @@ def list_owner_arts(owner_id):
         print(art)
     if not owner_arts:
         print('Sorry, you have no arts to view!')
+
+def add_new_art(owner_id, owner_name):
+    print(f"Adding a new art for owner: {owner_name}")
+    owner = Owner.find_by_id(owner_id)
+
+    if owner:
+        name = input("Enter art name: ")
+        artist = input("Enter artist name: ")
+        cost = input("Enter art cost: ")
+        cost_int = int(cost)
+
+        art = Art.create(owner_id, name, artist, cost_int)
+        print(f"Art '{art.name}' added successfully!")
+
 
 
 ## Museum Class
@@ -127,3 +141,5 @@ def update_exhibition_status():
 def exit_program():
     print("Goodbye!")
     exit()
+
+# ipdb.set_trace()

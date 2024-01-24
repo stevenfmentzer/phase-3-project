@@ -58,7 +58,7 @@ class Art:
         return self._owner_id
     @owner_id.setter
     def owner_id(self, owner_id):
-        if type(owner_id) is int and Owner.find_by_id(owner_id):
+        if Owner.find_by_id(owner_id):
             self._owner_id = owner_id
         else:
             raise ValueError(
@@ -134,9 +134,14 @@ class Art:
     @classmethod
     def create(cls, owner_id, name, artist, cost):
         """ Initialize a new art instance and save the object to the database """
-        art = cls(owner_id, name, artist, cost)
-        art.save()
-        return art
+        owner = Owner.find_by_id(owner_id)
+        if owner:
+            art = cls(owner_id, name, artist, cost)
+            art.save()
+            return art
+        else:
+            raise ValueError("owner_id must reference an owner in the database")
+
     
     @classmethod
     def instance_from_db(cls, row):
