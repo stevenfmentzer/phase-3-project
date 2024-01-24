@@ -60,4 +60,4 @@ View draw.io file
 
 ### Art Class Functions
 - add_new_art()
-- delete_art()
+- delete_art()  
