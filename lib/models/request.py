@@ -142,5 +142,17 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_museum_id(cls, id):
+        # Return request by id
+        sql = """
+    SELECT *
+    FROM requests
+    WHERE id = ?
+    """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
 
     
