@@ -8,7 +8,12 @@ from helpers import (
     get_owner_name_by_id,
     list_owner_arts, 
     add_new_art,
-    get_exhibition_by_name
+    get_exhibition_by_name,
+    create_exhibition, 
+    get_all_exhibition, 
+    update_exhibition_name, 
+    update_exhibition_dates, 
+    update_exhibition_status
 )
 
 
@@ -25,6 +30,12 @@ def main():
             pass
         elif choice == "3":
             get_exhibition_by_name()
+        elif choice == "4":
+            create_exhibition()
+        elif choice == "5":
+            get_all_exhibition()
+        elif choice == "6":
+            update_exhibition_menu()
         else:
             print("Invalid choice")
 
@@ -34,7 +45,10 @@ def main_menu():
     print("0. Exit the program")
     print("1. Owners")
     print("2. Museums")
-    print("3. By Exhibition by id")
+    print("3. By Exhibition by name")
+    print("4: Create Exhibit")
+    print("5: Get all Exhibits")
+    print("6: Update an Exhibition")
             
 def owner_menu():
     print("Welcome, Owner!")
@@ -132,10 +146,25 @@ def manage_art_options(owner_id):
         else:
             print("Invalid choice")
 
+def update_exhibition_menu():
+    while True:
+        update_exhibition_options()
+        choice = input("> ")
 
+        if choice == "1":
+            update_exhibition_name()
+        elif choice == "2":
+            update_exhibition_dates()
+        elif choice == "3":
+            update_exhibition_status()
+        else:
+            print("Invalid choice")
 
-
-
+def update_exhibition_options():
+    print("What would you like to update?")
+    print("1: Name")
+    print("2: Start & End Dates")
+    print("3: Update Status")
 
 
 if __name__ == "__main__":
