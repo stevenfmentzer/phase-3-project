@@ -198,10 +198,11 @@ def cli_3_create_new_print():
 def cli_3_create_new_function(): 
     pass
 
-def cli_4_owner_print():
+###IGOR START HERE
+def cli_5_owner_request_print():
     pass 
 
-def cli_4_owner_function(): 
+def cli_5_owner_requests_function(): 
     pass
 
 def cli_4_museum_print():
