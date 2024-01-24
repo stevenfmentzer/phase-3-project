@@ -45,7 +45,7 @@ class Request:
 
     @exebition.setter
     def exebition(self, exebition_id):
-        if isinstance(exebition_id, int) and Exebition.find_by_id(exebition_id):
+        if isinstance(exebition_id, int) and Exhibition.find_by_id(exebition_id):
             self._exebition_id = exebition_id
         else:
             raise ValueError("exebition_id must reference an exebition in the database")
@@ -70,7 +70,10 @@ class Request:
     art_id INTEGER,
     owner_id INTEGER,
     exebition TEXT,
-    approved BOOLEAN
+    approved INTEGER, 
+    FOREIGN KEY (art_id) REFERENCES arts(id),
+    FOREIGN KEY (owner_id) REFERENCES owners(id)
+    )
     """
         CURSOR.execute(sql)
         CONN.commit()
@@ -146,7 +149,6 @@ class Request:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
-<<<<<<< HEAD
 
 
     @classmethod
@@ -160,7 +162,8 @@ class Request:
         rows = CURSOR.execute(sql).fetchall()
         requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
         return requests
-=======
+    
+
     @classmethod
     def find_by_museum_id(cls, id):
         # Return request by id
@@ -173,5 +176,4 @@ class Request:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
->>>>>>> 9a79501375a4f866b153158a10266ca5df23f74b
     

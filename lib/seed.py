@@ -6,14 +6,10 @@ from models.museum import Museum
 from models.exhibition import Exhibition
 from models.art import Art
 from models.request import Request
-from unittest.mock import Mock
 
 
-# Usage in testing
-# fake_art_instance = Art(id=1, name="Fake Artwork")
-# fake_art_instance2 = Art(id=2, name="Fake Artwork")
-fake_request_instance = Request(id=1, description="Fake Request")
-fake_request_instance2 = Request(id=2, description="Fake Request")
+# fake_request_instance = Request(id=1, description="Fake Request")
+# fake_request_instance2 = Request(id=2, description="Fake Request")
 
 def seed_database():
     Owner.drop_table()
@@ -24,6 +20,8 @@ def seed_database():
     Exhibition.create_table()
     Request.drop_table()
     Request.create_table()
+    Art.drop_table()
+    Art.create_table()
 
     # Create seed data
     owner1 = Owner.create("John")

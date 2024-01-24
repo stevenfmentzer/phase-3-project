@@ -309,5 +309,8 @@ def cli_7_museum_list_requests_print(exhibition_name):
     # LIST ALL REQUESTS
     print("0: back")
 
-def cli_7_museum_list_requests():
+def cli_7_museum_list_requests_function():
     pass 
+
+if __name__ == "__main__":
+    cli_1_function()

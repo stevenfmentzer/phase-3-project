@@ -3,11 +3,7 @@ from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
 from models.art import Art
-<<<<<<< HEAD
-from models.request import Request
-=======
 from models.art import Request
->>>>>>> 9a79501375a4f866b153158a10266ca5df23f74b
 def helper_1():
     print("Performing useful function#1.")
 
@@ -151,20 +147,16 @@ def update_exhibition_status():
     
 ## Request Class
 
-<<<<<<< HEAD
 def get_all_request():
     requests = Request.get_all()
     for request in requests:
         print(request)
 
-
-=======
 def create_request(exhibition_name, art_id):
     # create(cls, art_id, owner_id, exebition_id, approved)
     owner_id = Art.find_by_id(art_id).owner_id
     Request.create(art_id, owner_id, exhibition_name)
     
->>>>>>> 9a79501375a4f866b153158a10266ca5df23f74b
 def exit_program():
     print("Goodbye!")
     exit()
