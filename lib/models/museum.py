@@ -20,10 +20,7 @@ class Museum:
     @name.setter
     def name(self, value):
         if isinstance(value, str) and len(value) > 2: 
-            if not hasattr(self, 'name'):
-                self._name = value
-            else: 
-                raise Exception("name is already set and can't be changed.")
+            self._name = value
         else: 
             raise TypeError("name must be type 'string' and be at least three characters long")
 
@@ -115,6 +112,7 @@ class Museum:
         """
         rows = CURSOR.execute(query, (museum_name,)).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
+        
 
     @classmethod
     def instance_from_db(cls, row):
