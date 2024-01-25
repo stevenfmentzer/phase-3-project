@@ -100,11 +100,14 @@ def get_all_exhibition_by_museum(museum_name):
     exhibition_names = []
     count = 1
     exhibitions = Exhibition.get_by_museum_id(museum_id)
-    for exhibition in exhibitions:
-        if exhibition.name not in exhibition_names:
-            exhibition_names.append(exhibition.name)
-            print(f"{count}: {exhibition.name}")
-            count += 1
+    if exhibitions:
+        for exhibition in exhibitions:
+            if exhibition.name not in exhibition_names:
+                exhibition_names.append(exhibition.name)
+                print(f"{count}: {exhibition.name}")
+                count += 1
+    else: 
+        print("No Exhibitions")
     return exhibition_names
 
 def create_exhibition(museum_name): 
@@ -154,24 +157,46 @@ def get_exhibition_by_name():
     else: 
         raise TypeError("Please choose a string")
     
-def update_exhibition_name():
-    name = input("Which exhibition do you want to update? ")
+
+
+
+
+
+def update_exhibition_name(exhibition_name):
+    new_name = input(f"What would you like to re-title {exhibition_name}? ")
     try:
-        exhibitions = Exhibition.get_by_name(name)
-        if exhibitions:
-            print(f'Exhibitions found with the name: {name}')
-
-            new_name = input("Enter the new name for the exhibition: ")
-
-            for exhibition in exhibitions:
-                exhibition.name = new_name
-                exhibition.update_by_name()
-
-            print(f'Exhibition Name updated to: {new_name} for all matching instances')
-        else:
-            print(f'No exhibition found with the name: {name}')
+        exhibitions = Exhibition.get_by_name(exhibition_name)
+        for exhibition in exhibitions:
+            exhibition.name = new_name
+            exhibition.update_by_name()
+        print(f'Exhibition {exhibition_name} updated to: {new_name} for all matching instances')
     except Exception as exc:
         print("Error updating exhibition name: ", exc)
+
+
+
+    #     def update_employee():
+    # id_ = input("Enter the employee's id: ")
+    # if employee := Employee.find_by_id(id_):
+    #     try:
+    #         name = input("Enter the employee's new name: ")
+    #         employee.name = name
+    #         job_title = input("Enter the employee's new job title: ")
+    #         employee.job_title = job_title
+    #         dept_id = input("Enter employee's new department id: ")
+    #         employee.department_id = dept_id
+
+    #         employee.update()
+    #         print(f'Success: {employee}')
+    #     except Exception as exc:
+    #         print("Error updating employee: ", exc)
+    # else:
+    #     print(f'Employee {id_} not found')
+
+
+
+
+
 
 def update_exhibition_dates():
     pass
