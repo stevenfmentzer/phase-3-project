@@ -146,16 +146,21 @@ class Exhibition:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
+
+
+
     def update_by_name(self):
         """Update the all rows corresponding to the current Exhibition name."""
         sql = """
             UPDATE exhibitions
             SET name = ?, start_date = ?, end_date = ?, status = ? 
-            WHERE name = ?
+            WHERE id = ?
         """
-        current_name = self.name
-        CURSOR.execute(sql, (self.name, self.start_date, self.end_date, self.status, current_name))
+        CURSOR.execute(sql, (self.name, self.start_date, self.end_date, self.status, self.id))
         CONN.commit()
+
+
+
 
     @classmethod
     def get_all(cls):

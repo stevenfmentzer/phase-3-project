@@ -337,6 +337,7 @@ def cli_6_museum_manage_exhib_print(exhibition_name):
     print(f"1: See all confirmed artworks in {exhibition_name}.")
     print(f"2: Request a new artwork for {exhibition_name}.")
     print("3: View pending loan requests.")
+    print("4: Update exhibtion title")
     print("0: back")
 
 def cli_6_museum_manage_exhib_function(exhibition_name, museum_name): 
@@ -353,11 +354,20 @@ def cli_6_museum_manage_exhib_function(exhibition_name, museum_name):
         # View pending loan requests
         if choice == "3":
             cli_7_museum_list_requests_function(exhibition_name, museum_name)
+        if choice == "4": 
+            cli_7_museum_update_exhibition_function(exhibition_name, museum_name)
         # BACK
         elif choice == "0":
             cli_5_museum_exhibition_list_function(museum_name)
         else: 
             print("invalid choice")
+
+# Not needed 
+# def cli_7_museum_update_exhibition_print(exhibition_name, museum_name):
+#     pass 
+
+def cli_7_museum_update_exhibition_function(exhibition_name, museum_name):
+    update_exhibition_name(exhibition_name)
 
 def cli_7_museum_approved_requests_print(exhibition_name, museum_name):
     pass

@@ -76,5 +76,7 @@ def seed_database():
     request4_2 = Request.create(art_id=art5.id, owner_id=2, exhibition_name='Ancient Art Treasures', approved=True)
     request4_3 = Request.create(art_id=art9.id, owner_id=3, exhibition_name='Ancient Art Treasures', approved=True)
 
+
+
 seed_database()
 print("Seeded database")
