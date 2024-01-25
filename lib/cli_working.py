@@ -51,8 +51,9 @@ def cli_1_print():
     print("1. Owners")
     print("2. Museums")
 
-
 def cli_1_function():
+    os.system("clear")
+
     while True:
         cli_1_print()
         choice = input("> ")
@@ -73,8 +74,9 @@ def cli_2_owner_print():
     print("1. existing owner")
     print("2. create new owner")
 
+def cli_2_owner_function(): 
+    os.system("clear")
 
-def cli_2_owner_function():
     print("Welcome, Owner!")
     while True:
         cli_2_owner_print()
@@ -104,6 +106,7 @@ def cli_2_museum_print():
 
 
 def cli_2_museum_function():
+    os.system("clear")
     print("Welcome, Museum!")
     cli_2_museum_print()
 
@@ -128,6 +131,7 @@ def cli_2_museum_function():
 
 
 def cli_3_existing_museum_function():
+    os.system("clear")
     print("Welcome Museum! Select an existing museum:")
     museum_list = get_all_museum()
     while True:
@@ -165,6 +169,7 @@ def cli_4_existing_owner_print():
 
 
 def cli_4_existing_owner_function(owner_name, owner_id):
+    os.system("clear")
     print(f"Welcome, {owner_name}! What would you like to do?")
     cli_4_existing_owner_print()
 
@@ -182,7 +187,8 @@ def cli_4_existing_owner_function(owner_name, owner_id):
             # view_loan_requests()
             cli_owner_request_1_function(owner_name, owner_id)
 
-            pass
+            break
+
         elif choice == "3":
             get_all_exhibition()
             pass
@@ -526,7 +532,7 @@ def cli_owner_request_2_print(sql_rows, approved_bool):
 
 
 def cli_owner_request_2_print_result(result):
-    os.system("clear")
+    # os.system("clear")
     while True:
         if result:
             # print("Request ID:", result[0])
