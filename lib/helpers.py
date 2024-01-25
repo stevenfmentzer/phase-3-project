@@ -207,6 +207,29 @@ def get_requests_by_exhibition_name(exhibition_name):
 def get_requests_by_exhibition_name_owner_id(exhibition_name, owner_id):
     return Request.find_by_exhibition_name_and_owner_id(exhibition_name, owner_id)
 
+############### IGOR'S CODE START
+
+
+def get_all_requests_by_owner_id(owner_id):
+    req = Request.get_all_requests_by_owner_id(owner_id)
+    return req
+
+
+def get_all_not_approved_requests_by_owner_id(owner_id):
+    req = Request.get_all_not_approved_requests_by_owner_id(owner_id)
+    return req
+
+
+def get_all_request_details_by_request_id(request_id):
+    req = Request.get_all_request_details_by_request_id(request_id)
+    return req
+
+
+def find_request_by_id(request_id):
+    return Request.find_by_id(request_id)
+
+############### IGOR'S CODE END
+
 def exit_program():
     print("Goodbye!")
     exit()
