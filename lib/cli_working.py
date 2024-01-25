@@ -1,5 +1,7 @@
 # lib/cli.py
 
+import os
+
 from helpers import (
     exit_program,
     list_owners,
@@ -21,7 +23,11 @@ from helpers import (
     get_requests_by_exhibition_name,
     delete_art,
     get_requests_by_exhibition_name_owner_id,
-    get_all_exhibition_by_museum
+    get_all_exhibition_by_museum,
+    get_all_requests_by_owner_id,
+    get_all_not_approved_requests_by_owner_id,
+    get_all_request_details_by_request_id,
+    find_request_by_id,
 )
 
 # list structure:
@@ -415,6 +421,131 @@ def cli_7_museum_list_requests_function(exhibition_name, museum_name):
             cli_6_museum_manage_exhib_function(exhibition_name, museum_name)
         else: 
             print("invalid choice")
+
+#############  IGOR'S CODE START HERE  #####
+
+
+########    cli_owner_request_1   ##########
+############################################
+def cli_owner_request_1_print():
+    os.system("clear")
+    print("What would you like to do?")
+    print("1: View all requests")
+    print("2: View requests for confirmation")
+    print("0: go back")
+    print("")
+
+
+def cli_owner_request_1_function(owner_name, owner_id):
+    while True:
+        cli_owner_request_1_print()
+        choice = input("> ")
+        if choice == "1":
+            sql_rows = get_all_requests_by_owner_id(owner_id)
+            cli_owner_request_2_function(sql_rows, True)
+            break
+        if choice == "2":
+            sql_rows = get_all_not_approved_requests_by_owner_id(owner_id)
+            cli_owner_request_2_function(sql_rows, False)
+            break
+        elif choice == "0":
+            break
+        else:
+            print("invalid choice")
+
+
+########    cli_owner_request_2  / 3 ##########
+###############################################
+def cli_owner_request_2_print(sql_rows, approved_bool):
+    os.system("clear")
+    if approved_bool:
+        print("List of Requests :: ")
+    else:
+        print("List of Requests needs to be Approved:: ")
+
+    ([print(row[0], " | ", row[3]) for row in sql_rows]) if sql_rows else print(
+        "No requests found!"
+    )
+
+    print("")
+    print("Enter the ID of the request to see details:")
+    print("0. go back")
+    print("")
+
+
+def cli_owner_request_2_print_result(result):
+    os.system("clear")
+    while True:
+        if result:
+            # print("Request ID:", result[0])
+            print("Exhibition Name:", result[1])
+            print(f'Status: {("Approved" if result[2] == 1 else "Awaiting approval")}')
+            print("Owner Name:", result[3])
+            print("Art Name:", result[4])
+            print("Artist:", result[5])
+            print("Museum Name:", result[6])
+            print("Start Date:", result[7])
+            print("End Date:", result[8])
+        else:
+            print("Request not found!")
+
+        print("")
+
+        if result and result[2] != 1:
+            print("1: To Approve the requst")
+
+        print("0: Back to main menu")
+
+        choice = input("> ")
+        if choice == "0":
+            cli_1_function()
+            break
+        elif choice == "1":
+            request = find_request_by_id(result[0])
+            print(dir(request))
+            print(request.exhibition)
+
+            # request.exhibition("exhib")
+            print(" approve ::: ", request.approved)
+            request.approved = 1
+
+            request.update()
+            break
+        else:
+            print("invalid choice")
+            break
+
+
+def cli_owner_request_2_function(sql_rows, approved_bool):
+    while True:
+        cli_owner_request_2_print(sql_rows, approved_bool)
+        choice = input("> ")
+
+        # CHECK IF THE USER IS ENTERING A NUMBER NOT A STRING !!!!
+        # CHECK IF ID IN sql_rows
+        if choice == "0":
+            break
+        else:
+            sql_row = get_all_request_details_by_request_id(choice)
+            cli_owner_request_2_print_result(sql_row)
+            # break
+
+
+########    cli_owner_request_4 ##########
+##########################################
+def cli_owner_request_4_print(sql_rows, i):
+    print("1: Approve the request")
+    print("0: go back")
+
+
+def cli_owner_request_4_print(sql_rows, i):
+    # while True:
+    #     cli_owner_request_4_print(sql_rows, i)
+    pass
+
+
+#############  IGOR'S CODE END HERE
+
 
 if __name__ == "__main__":
     cli_1_function()
