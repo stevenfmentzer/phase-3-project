@@ -129,12 +129,18 @@ def cli_3_existing_museum_function():
     
 
 def cli_3_existing_owner_print():
+
+
     print("Welcome Owner! Select an existing owner:")  # can delete as input is shown below
     list_owners()
 
     owner_id = input("Enter the ID of the owner you want to choose: ")
     owner_name = get_owner_name_by_id(owner_id)
-    cli_4_existing_owner_function(owner_name, owner_id)
+    if owner_name is None:
+        print("Owner ID doesn't exist")
+
+    else:
+        cli_4_existing_owner_function(owner_name, owner_id)
 
 
 def cli_4_existing_owner_print():
@@ -196,9 +202,6 @@ def cli_5_owner_print(owner_id):
             pass
         else:
             print("Invalid choice")
-
-    
-    
 
 
 def cli_3_existing_function(): 
