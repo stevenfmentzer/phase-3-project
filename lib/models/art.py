@@ -16,7 +16,7 @@ class Art:
         owner_name = Owner.find_by_id(self.owner_id).name
 
         return (
-            f"<Art {self.id}: {self.name}, {self.artist}, {self.cost} "
+            f"<Art {self.id}: {self.name}, Artist: {self.artist}, Cost: {self.cost} "
             + f"Owner: {owner_name} >"
         )
     

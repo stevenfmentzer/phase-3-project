@@ -244,3 +244,13 @@ class Request:
             request = cls(row[1], row[2], row[3], bool(row[4]), id=row[0])
             cls.all[request.id] = request
         return request
+
+    @classmethod
+    def find_by_owner_id(cls, owner_id):
+        sql = """
+            SELECT *
+            FROM requests
+            WHERE owner_id = ?
+        """
+        rows = CURSOR.execute(sql, (owner_id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows] if rows else None

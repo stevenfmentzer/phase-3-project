@@ -88,7 +88,7 @@ def cli_2_owner_function():
             print("Invalid choice")
 
 def cli_2_museum_print():
-    print("Museum, Please selecte an option:")
+    print("Museum, Please select an option:")
     print("0. Back to main menu")
     print("1. existing museum")
     print("2. create new museum")
@@ -101,7 +101,7 @@ def cli_2_museum_function():
         choice = input("> ")
 
         if choice == "0":
-            break
+            cli_1_function()
         # 1. existing museum
         elif choice == "1": 
             cli_3_existing_museum_function() 
@@ -132,12 +132,18 @@ def cli_3_existing_museum_function():
     
 
 def cli_3_existing_owner_print():
+
+
     print("Welcome Owner! Select an existing owner:")  # can delete as input is shown below
     list_owners()
 
     owner_id = input("Enter the ID of the owner you want to choose: ")
     owner_name = get_owner_name_by_id(owner_id)
-    cli_4_existing_owner_function(owner_name, owner_id)
+    if owner_name is None:
+        print("Owner ID doesn't exist")
+
+    else:
+        cli_4_existing_owner_function(owner_name, owner_id)
 
 
 def cli_4_existing_owner_print():
@@ -157,50 +163,48 @@ def cli_4_existing_owner_function(owner_name, owner_id):
             cli_3_existing_owner_print()
             break
         elif choice == "1":
-            cli_5_owner_function(owner_id)
+            cli_5_owner_print(owner_id)
             break
 
         elif choice == "2":
             # view_loan_requests()
-            get_all_request()
+            get_all_request(owner_id, owner_name)
+
             pass
         elif choice == "3":
-            cli_5_owner_exhibitions_function(owner_name, owner_id)
+            get_all_exhibition()
+            pass
         else:
             print("Invalid choice")
 
 def cli_5_owner_print(owner_id):
-    print("0. Back to main menu")
-    print("1. View all arts")
-    print("2. Add new art")
-    print("3. delete art")
-
-def cli_5_owner_function(owner_id):
     from models.owner import Owner
     owner = Owner.find_by_id(owner_id)
     owner_name = owner.name
+
     while True:
+        print("**Manage artworks here!**")
+        print("0. Back to previous menu")
+        print("1. View all arts")
+        print("2. Add new art")
+        print("3. delete art")
         choice = input("> ")
-        # 0. Back to main menu
+
+
         if choice == "0":
-            break
-        # 1. View all arts
+            cli_4_existing_owner_function(owner_name, owner_id)
         elif choice == "1":
             list_owner_arts(owner_id)
-        # 2. Add new art
+            
         elif choice == "2":
             add_new_art(owner_id, owner_name)
             list_owner_arts(owner_id)
-        # 3. delete art
         elif choice == "3":
             list_owner_arts(owner_id)
             delete_art()
             pass
         else:
             print("Invalid choice")
-
-    
-    
 
 
 def cli_3_existing_function(): 
