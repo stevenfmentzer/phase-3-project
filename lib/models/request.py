@@ -41,12 +41,12 @@ class Request:
 
     @property
     def exhibition(self):
-        return self._exhibition_name
+        return self.exhibition_name
 
     @exhibition.setter
     def exhibition(self, exhibition_name):
         if isinstance(exhibition_name, str) and Exhibition.get_by_name(exhibition_name):
-            self._exhibition_name = exhibition_name
+            self.exhibition_name = exhibition_name
         else:
             raise ValueError(
                 "exhibition_name must reference an exhibition in the database"
@@ -58,10 +58,10 @@ class Request:
 
     @approved.setter
     def approved(self, approved):
-        if isinstance(approved, bool):
+        if isinstance(approved, int):
             self._approved = approved
         else:
-            raise ValueError("approved must be a boolean")
+            raise ValueError("approved must be a integer")
 
     @classmethod
     def create_table(cls):
@@ -150,8 +150,6 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
-    
-
 
     @classmethod
     def get_all(cls):
@@ -162,9 +160,11 @@ class Request:
         """
 
         rows = CURSOR.execute(sql).fetchall()
-        requests = [cls(row[1], row[2], row[3], bool(row[4]), id=row[0]) for row in rows]
+        requests = [
+            cls(row[1], row[2], row[3], bool(row[4]), id=row[0]) for row in rows
+        ]
         return requests
-    
+
     @classmethod
     def find_by_museum_id(cls, id):
         # Return request by id
@@ -176,7 +176,7 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
-    
+
     @classmethod
     def find_by_exhibition_name_and_owner_id(cls, exhibition_name, owner_id):
         # Return request by exhibition name and owner ID
@@ -188,7 +188,6 @@ class Request:
 
         rows = CURSOR.execute(sql, (exhibition_name, owner_id)).fetchall()
         return rows
-    
 
     @classmethod
     def find_by_exhibition_name(cls, exhibition_name):
@@ -225,7 +224,7 @@ class Request:
 
     #     rows = CURSOR.execute(sql, (id,)).fetchall()
     #     return [cls.instance_from_db(row) for row in rows] if rows else Nsone
-    
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a request object having the attribute values from the table row."""
@@ -239,8 +238,7 @@ class Request:
             request.exhibition_name = row[3]
             request.approved = bool(row[4])
         else:
-        
-        # not in dictionary, create new instance and add to dictionary
+            # not in dictionary, create new instance and add to dictionary
             request = cls(row[1], row[2], row[3], bool(row[4]), id=row[0])
             cls.all[request.id] = request
         return request
@@ -255,7 +253,7 @@ class Request:
         rows = CURSOR.execute(sql, (owner_id,)).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
 
-####################### IGOR'S METHODS HERE
+    ####################### IGOR'S METHODS HERE
     @classmethod
     def instance_from_db(cls, row):
         """Return a Request object having the attribute values from the table row."""
