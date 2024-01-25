@@ -86,7 +86,7 @@ def cli_2_owner_function():
             print("Invalid choice")
 
 def cli_2_museum_print():
-    print("Museum, Please selecte an option:")
+    print("Museum, Please select an option:")
     print("0. Back to main menu")
     print("1. existing museum")
     print("2. create new museum")
@@ -99,7 +99,7 @@ def cli_2_museum_function():
         choice = input("> ")
 
         if choice == "0":
-            break
+            cli_1_function()
         # 1. existing museum
         elif choice == "1": 
             cli_3_existing_museum_function() 
@@ -154,7 +154,7 @@ def cli_4_existing_owner_function(owner_name, owner_id):
             cli_3_existing_owner_print()
             break
         elif choice == "1":
-            cli_5_owner_function(owner_id)
+            cli_5_owner_print(owner_id)
             break
 
         elif choice == "2":
@@ -163,33 +163,33 @@ def cli_4_existing_owner_function(owner_name, owner_id):
 
             pass
         elif choice == "3":
-            cli_5_owner_exhibitions_function(owner_name, owner_id)
+            get_all_exhibition()
+            pass
         else:
             print("Invalid choice")
 
 def cli_5_owner_print(owner_id):
-    print("0. Back to main menu")
-    print("1. View all arts")
-    print("2. Add new art")
-    print("3. delete art")
-
-def cli_5_owner_function(owner_id):
     from models.owner import Owner
     owner = Owner.find_by_id(owner_id)
     owner_name = owner.name
+
     while True:
+        print("**Manage artworks here!**")
+        print("0. Back to previous menu")
+        print("1. View all arts")
+        print("2. Add new art")
+        print("3. delete art")
         choice = input("> ")
-        # 0. Back to main menu
+
+
         if choice == "0":
-            break
-        # 1. View all arts
+            cli_4_existing_owner_function(owner_name, owner_id)
         elif choice == "1":
             list_owner_arts(owner_id)
-        # 2. Add new art
+            
         elif choice == "2":
             add_new_art(owner_id, owner_name)
             list_owner_arts(owner_id)
-        # 3. delete art
         elif choice == "3":
             list_owner_arts(owner_id)
             delete_art()
@@ -243,19 +243,8 @@ def cli_4_museum_function(museum_name):
 def cli_5_owner_exhibitions_print():
     pass
 
-def cli_5_owner_exhibitions_function(owner_name, owner_id): ######### UPDATE TO FILTER FOR OWNER ############
-    exhibition_list = get_all_exhibition()
-    while True: 
-        choice = input("> ")
-        # If choice is in range of options go to that choice
-        if 0 < int(choice) <= len(exhibition_list):
-            cli_6_museum_manage_exhib_function(exhibition_list[int(choice)-1], museum_name) ################
-        # BACK
-        elif choice =="0":
-            cli_4_existing_owner_function(owner_name, owner_id)
-        else: 
-            print("invalid choice")
-
+def cli_5_owner_exhibitions_function(): 
+    pass
 
 def cli_5_owner_art_print():
     pass
@@ -274,7 +263,7 @@ def cli_5_museum_exhibition_list_function(museum_name):
         choice = input("> ")
         # If choice is in range of options go to that choice
         if 0 < int(choice) <= len(exhibition_list):
-            cli_6_owner_manage_exhib_function(exhibition_list[int(choice)-1], museum_name)
+            cli_6_museum_manage_exhib_function(exhibition_list[int(choice)-1], museum_name)
         # BACK
         elif choice =="0":
             cli_4_museum_function(museum_name)
@@ -301,12 +290,6 @@ def cli_6_owner_new_art_print():
 
 def cli_6_owner_new_art_function(): 
     pass
-
-def cli_6_owner_manage_exhib_print():
-    pass
-
-def cli_6_owner_manage_exhib_function(exhibition_name, owner_name): 
-    pass ########### CONTINUE
 
 def cli_6_museum_manage_exhib_print(exhibition_name):
     print("What would you like to do?")
