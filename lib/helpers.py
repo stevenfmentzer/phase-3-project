@@ -95,6 +95,18 @@ def get_all_exhibition():
             count += 1
     return exhibition_names
 
+def get_all_exhibition_by_museum(museum_name):
+    museum_id = Museum.get_by_name(museum_name)[0].id
+    exhibition_names = []
+    count = 1
+    exhibitions = Exhibition.get_by_museum_id(museum_id)
+    for exhibition in exhibitions:
+        if exhibition.name not in exhibition_names:
+            exhibition_names.append(exhibition.name)
+            print(f"{count}: {exhibition.name}")
+            count += 1
+    return exhibition_names
+
 def create_exhibition(museum_name): 
     # Get input for exhibition details
     museum_list =  Museum.get_by_name(museum_name)
@@ -183,11 +195,10 @@ def create_request(exhibition_name, art_id):
     print("")
 
 def get_requests_by_exhibition_name(exhibition_name):
-    exhibition = Exhibition.get_by_name(exhibition_name)
-    museum = Exhibition.get_by_museum_id(exhibition[0].museum_id)[0].id
-    requests = Request.find_by_museum_id(museum)
-    return requests
+    return Request.find_by_exhibition_name(exhibition_name)
 
+def get_requests_by_exhibition_name_owner_id(exhibition_name, owner_id):
+    return Request.find_by_exhibition_name_and_owner_id(exhibition_name, owner_id)
 
 def exit_program():
     print("Goodbye!")

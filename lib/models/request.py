@@ -7,7 +7,7 @@ from models.owner import Owner
 class Request:
     all = {}
 
-    def __init__(self, art_id, owner_id, exhibition_name, approved=None, id=None):
+    def __init__(self, art_id, owner_id, exhibition_name, approved=False, id=None):
         self.id = id
         self.art_id = art_id
         self.owner_id = owner_id
@@ -164,6 +164,7 @@ class Request:
         rows = CURSOR.execute(sql).fetchall()
         requests = [cls(row[1], row[2], row[3], bool(row[4]), id=row[0]) for row in rows]
         return requests
+    
     @classmethod
     def find_by_museum_id(cls, id):
         # Return request by id
@@ -175,6 +176,31 @@ class Request:
 
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_exhibition_name_and_owner_id(cls, exhibition_name, owner_id):
+        # Return request by exhibition name and owner ID
+        sql = """
+        SELECT *
+        FROM requests
+        WHERE exhibition_name = ? AND owner_id = ?
+        """
+
+        rows = CURSOR.execute(sql, (exhibition_name, owner_id)).fetchall()
+        return rows
+    
+
+    @classmethod
+    def find_by_exhibition_name(cls, exhibition_name):
+        # Return request by exhibition name
+        sql = """
+        SELECT *
+        FROM requests
+        WHERE exhibition_name = ?
+        """
+
+        rows = CURSOR.execute(sql, (exhibition_name,)).fetchall()
+        return rows
 
     # @classmethod
     # def get_all(cls):
@@ -188,17 +214,17 @@ class Request:
     #     requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
     #     return requests
 
-    @classmethod
-    def find_by_museum_id(cls, id):
-        # Return requests by id
-        sql = """
-            SELECT *
-            FROM requests
-            WHERE id = ?
-        """
+    # @classmethod
+    # def find_by_museum_id(cls, id):
+    #     # Return requests by id
+    #     sql = """
+    #         SELECT *
+    #         FROM requests
+    #         WHERE id = ?
+    #     """
 
-        rows = CURSOR.execute(sql, (id,)).fetchall()
-        return [cls.instance_from_db(row) for row in rows] if rows else Nsone
+    #     rows = CURSOR.execute(sql, (id,)).fetchall()
+    #     return [cls.instance_from_db(row) for row in rows] if rows else Nsone
     
     @classmethod
     def instance_from_db(cls, row):
