@@ -245,7 +245,7 @@ def cli_4_museum_function(museum_name):
             cli_5_museum_exhibition_list_function(museum_name)
         # Start a new exhibition
         if choice == "2": 
-            cli_5_museum_create_exhib_funßction(museum_name)
+            cli_5_museum_create_exhib_function(museum_name)
         # BACK
         elif choice == "0":
             cli_3_existing_museum_function()
