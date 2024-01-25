@@ -169,10 +169,17 @@ def update_exhibition_status():
     
 ## Request Class
 
-def get_all_request():
-    requests = Request.get_all()
-    for request in requests:
-        print(request)
+def get_all_request(owner_id,owner_name):
+    try:
+        requests = Request.find_by_owner_id(owner_id)
+        if requests:
+            for request in requests:
+                print(request)
+        else:
+            print(f'No existing requests found for {owner_name}')
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    
 
 def create_request(exhibition_name, art_id):
     # create(cls, art_id, owner_id, exebition_id, approved)

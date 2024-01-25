@@ -159,7 +159,8 @@ def cli_4_existing_owner_function(owner_name, owner_id):
 
         elif choice == "2":
             # view_loan_requests()
-            get_all_request()
+            get_all_request(owner_id, owner_name)
+
             pass
         elif choice == "3":
             get_all_exhibition()
