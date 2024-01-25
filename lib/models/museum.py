@@ -11,7 +11,7 @@ class Museum:
         self.name = name
 
     def __repr__(self):
-        return f"<Museum {self.id}: {self.name}>"
+        return f"<Museum: {self.name}>"
 
     @property
     def name(self):
