@@ -254,3 +254,81 @@ class Request:
         """
         rows = CURSOR.execute(sql, (owner_id,)).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
+
+####################### IGOR'S METHODS HERE
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Request object having the attribute values from the table row."""
+
+        # Check the dictionary for an existing instance using the row's primary key
+        request = cls.all.get(row[0])
+        if request:
+            # ensure attributes match row values in case local object was modified
+            request.art_id = row[1]
+            request.owner_id = row[2]
+            request.exhibition_name = row[3]
+            request.approved = row[4]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            request = cls(row[1], row[2], row[3], row[4])
+            request.id = row[0]
+            cls.all[request.id] = request
+        return request
+
+    @classmethod
+    def get_all_requests_by_owner_id(cls, owner_id):
+        """Return a list containing a Request object per row in the table"""
+        sql = """
+            SELECT *
+            FROM requests
+            WHERE owner_id = ?
+        """
+
+        rows = CURSOR.execute(sql, (owner_id,)).fetchall()
+        # requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        return rows
+
+    @classmethod
+    def get_all_not_approved_requests_by_owner_id(cls, owner_id):
+        """Return a list containing a Request object per row in the table"""
+        sql_query = """
+            SELECT *
+            FROM requests
+            WHERE owner_id = ? AND approved = 0
+        """
+
+        rows = CURSOR.execute(sql_query, (owner_id,)).fetchall()
+        # requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        return rows
+
+    @classmethod
+    def get_all_request_details_by_request_id(cls, request_id):
+        """Return a list containing a Request object per row in the table"""
+        sql_query = """
+            SELECT
+                requests.id AS request_id,
+                requests.exhibition_name,
+                requests.approved,
+                owners.name AS owner_name,
+                arts.name AS art_name,
+                arts.artist,
+                museums.name AS museum_name,
+                exhibitions.start_date,
+                exhibitions.end_date
+            FROM
+                requests
+            JOIN
+                owners ON requests.owner_id = owners.id
+            JOIN
+                arts ON requests.art_id = arts.id
+            JOIN
+                exhibitions ON requests.exhibition_name = exhibitions.name
+            JOIN
+                museums ON exhibitions.museum_id = museums.id
+            WHERE
+                requests.id = ?;
+            """
+
+        row = CURSOR.execute(sql_query, (request_id,)).fetchone()
+        # requests = [cls(row[1], row[2], row[3], row[4], id=row[0]) for row in rows]
+        return row
