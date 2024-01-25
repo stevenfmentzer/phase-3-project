@@ -105,19 +105,29 @@ class Museum:
         return museums
         # return [cls.instance_from_db(row) for row in rows]
 
+    @classmethod
+    def get_by_name(cls, museum_name):
+        """ Return Exhibition object(s) with matching name """
+        query = """
+            SELECT *
+            FROM museums
+            WHERE name is ?
+        """
+        rows = CURSOR.execute(query, (museum_name,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows] if rows else None
 
-    # @classmethod
-    # def instance_from_db(cls, row):
-    #     """Return a Museum object having the attribute values from the table row."""
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Museum object having the attribute values from the table row."""
 
-    #     # Check the dictionary for an existing instance using the row's primary key
-    #     museum = cls.all.get(row[0])
-    #     if museum:
-    #         # ensure attributes match row values in case local object was modified
-    #         museum.name = row[1]
-    #     else:
-    #         # not in dictionary, create new instance and add to dictionary
-    #         museum = cls(row[1])
-    #         museum.id = row[0]
-    #         cls.all[museum.id] = museum
-    #     return museum
+        # Check the dictionary for an existing instance using the row's primary key
+        museum = cls.all.get(row[0])
+        if museum:
+            # ensure attributes match row values in case local object was modified
+            museum.name = row[1]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            museum = cls(row[1])
+            museum.id = row[0]
+            cls.all[museum.id] = museum
+        return museum

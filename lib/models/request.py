@@ -1,15 +1,16 @@
 from models.__init__ import CURSOR, CONN
 from models.art import Art
 from models.exhibition import Exhibition
+from models.owner import Owner
 
 
 class Request:
     all = {}
 
-    def __init__(self, art_id, owner_id, exhibition_name, approved=False, id=None):
+    def __init__(self, art_id, owner_id, exhibition_name, approved=None, id=None):
         self.id = id
         self.art_id = art_id
-        self.request_id = request_id
+        self.owner_id = owner_id
         self.exhibition_name = exhibition_name
         self.approved = approved
 
@@ -29,14 +30,14 @@ class Request:
 
     @property
     def request(self):
-        return self._request_id
+        return self._owner_id
 
     @request.setter
-    def request(self, request_id):
-        if isinstance(request_id, int) and request.find_by_id(request_id):
-            self._request_id = request_id
+    def request(self, owner_id):
+        if isinstance(owner_id, int) and Owner.find_by_id(owner_id):
+            self._owner_id = owner_id
         else:
-            raise ValueError("request_id must reference an request in the database")
+            raise ValueError("owner_id must reference an request in the database")
 
     @property
     def exhibition(self):
@@ -69,11 +70,11 @@ class Request:
     CREATE TABLE IF NOT EXISTS requests (
     id INTEGER PRIMARY KEY,
     art_id INTEGER,
-    request_id INTEGER,
+    owner_id INTEGER,
     exhibition_name TEXT,
     approved INTEGER, 
     FOREIGN KEY (art_id) REFERENCES arts(id),
-    FOREIGN KEY (request_id) REFERENCES requests(id)
+    FOREIGN KEY (owner_id) REFERENCES requests(id)
     )
     """
         CURSOR.execute(sql)
@@ -95,7 +96,7 @@ class Request:
         """
 
         CURSOR.execute(
-            sql, (self.art_id, self.request_id, self.exhibition_name, self.approved)
+            sql, (self.art_id, self.owner_id, self.exhibition_name, self.approved)
         )
         CONN.commit()
 
@@ -106,12 +107,12 @@ class Request:
         # Update the request in DB
         sql = """
     UPDATE requests
-    SET art_id = ?, request_id = ?, exhibition_name = ?, approved = ?
+    SET art_id = ?, owner_id = ?, exhibition_name = ?, approved = ?
     WHERE id = ?
     """
         CURSOR.execute(
             sql,
-            (self.art_id, self.request_id, self.exhibition_name, self.approved, self.id),
+            (self.art_id, self.owner_id, self.exhibition_name, self.approved, self.id),
         )
         CONN.commit()
 
@@ -132,9 +133,9 @@ class Request:
         self.id = None
 
     @classmethod
-    def create(cls, art_id, request_id, exhibition_name, approved):
+    def create(cls, art_id, owner_id, exhibition_name, approved):
         # Initialize a new request instance and save it into the DB
-        request = cls(art_id, request_id, exhibition_name, approved)
+        request = cls(art_id, owner_id, exhibition_name, approved)
         request.save()
         return request
 
@@ -189,15 +190,15 @@ class Request:
 
     @classmethod
     def find_by_museum_id(cls, id):
-        # Return request by id
+        # Return requests by id
         sql = """
-    SELECT *
-    FROM requests
-    WHERE id = ?
-    """
+            SELECT *
+            FROM requests
+            WHERE id = ?
+        """
 
-        row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None
+        rows = CURSOR.execute(sql, (id,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows] if rows else Nsone
     
     @classmethod
     def instance_from_db(cls, row):
@@ -208,7 +209,7 @@ class Request:
         if request:
             # ensure attributes match row values in case local object was modified
             request.art_id = row[1]
-            request.request_id = row[2]
+            request.owner_id = row[2]
             request.exhibition_name = row[3]
             request.approved = bool(row[4])
         else:

@@ -35,8 +35,8 @@ def seed_database():
     exhibition1 = Exhibition.create("Figures of Speech", 1, 1, "2024-01-11", "2024-06-11")
     exhibition2 = Exhibition.create("Figures of Speech 2", 2, 2, "2024-07-11", "2024-12-31")
     
-    art1 = Art.create(1, 'Mona Lisa', "Da Vinci", 400000)
-    art2 = Art.create(2, 'Starry Night', "Van Gogh", 130090)
+    art1 = Art.create(2, 'Mona Lisa', "Da Vinci", 400000)
+    art2 = Art.create(1, 'Starry Night', "Van Gogh", 130090)
 
     request1 = Request.create(1,1,'Exhibition in NY', approved=True)
 

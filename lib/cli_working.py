@@ -18,7 +18,8 @@ from helpers import (
     get_all_request, 
     create_request, 
     get_all_art,
-    get_requests_by_exhibition_name
+    get_requests_by_exhibition_name,
+    delete_art
 )
 
 # list structure:
@@ -99,24 +100,32 @@ def cli_2_museum_function():
 
         if choice == "0":
             break
+        # 1. existing museum
         elif choice == "1": 
-            cli_5_museum_create_exhib_function()      
-            # cli_3_existing_museum_print()
-            
-
+            cli_3_existing_museum_function() 
+        # 2. create new museum 
         elif choice == "2":
             create_new_museum()
-            cli_3_existing_museum_print()
-
-
         else:
             print("Invalid choice")
         
 
-def cli_3_existing_museum_print():
-    print("Welcome Museum! Select an existing museum:")
-    get_all_museum()
+# def cli_3_existing_museum_print():
+#     pass
    
+def cli_3_existing_museum_function():
+    print("Welcome Museum! Select an existing museum:")
+    museum_list = get_all_museum()
+    while True: 
+        choice = input("> ")
+        # If choice is in range of options go to that choice
+        if 0 < int(choice) <= len(museum_list):
+            cli_4_museum_function(museum_list[int(choice)-1])
+        # BACK
+        elif choice =="0":
+            cli_2_museum_function()
+        else: 
+            print("invalid choice")
     
 
 def cli_3_existing_owner_print():
@@ -212,19 +221,20 @@ def cli_4_museum_print():
     print("2: Start a new exhibition")
     print("0: exit")
 
-def cli_4_museum_function(): 
+def cli_4_museum_function(museum_name):
+    print(f"Welcome {museum_name}!")
+    cli_4_museum_print()
     while True: 
-        cli_4_museum_print()
         choice = input("> ")
         # View all exhibitions
         if choice == "1":
-            cli_5_museum_exhibition_list_function()
+            cli_5_museum_exhibition_list_function(museum_name)
         # Start a new exhibition
         if choice == "2": 
-            cli_5_museum_create_exhib_function()
+            cli_5_museum_create_exhib_function(museum_name)
         # BACK
         elif choice == "0":
-            cli_3_existing_function  ##### DOUBLE CHECK THE FUNCTION NAME #######
+            cli_3_existing_museum_function()
         else: 
             print("invalid choice")
 
@@ -244,35 +254,28 @@ def cli_5_owner_art_function():
 # def cli_5_museum_exhibition_list_print():
 #     pass
  
-def cli_5_museum_exhibition_list_function():
+def cli_5_museum_exhibition_list_function(museum_name):
     print("Which exhibition do you want to manage?")
     exhibition_list = get_all_exhibition() 
     while True: 
         choice = input("> ")
         # If choice is in range of options go to that choice
         if 0 < int(choice) <= len(exhibition_list):
-            cli_6_museum_manage_exhib_function(exhibition_list[int(choice)-1])
+            cli_6_museum_manage_exhib_function(exhibition_list[int(choice)-1], museum_name)
         # BACK
         elif choice =="0":
-            cli_4_museum_function()
+            cli_4_museum_function(museum_name)
         else: 
             print("invalid choice")
 
-def cli_5_museum_create_exhib_print():
-    print("What would you like to do?")
+# def cli_5_museum_create_exhib_print():
+#     pass
 
-def cli_5_museum_create_exhib_function():
-    while True: 
-        cli_5_museum_create_exhib_print()
-        choice = input("> ")
-        if choice == "1":
-            pass
-        if choice == "2": 
-            pass
-        elif choice == "0":
-            break
-        else: 
-            print("invalid choice")
+def cli_5_museum_create_exhib_function(museum_name):
+    create_exhibition(museum_name)
+    print(" ")
+    print(" ")
+    cli_4_museum_function(museum_name)
 
 def cli_6_owner_request_print():
     pass 
@@ -293,7 +296,7 @@ def cli_6_museum_manage_exhib_print(exhibition_name):
     print("3: View pending loan requests.")
     print("0: back")
 
-def cli_6_museum_manage_exhib_function(exhibition_name): 
+def cli_6_museum_manage_exhib_function(exhibition_name, museum_name): 
     while True: 
         cli_6_museum_manage_exhib_print(exhibition_name)
         choice = input("> ")
@@ -308,7 +311,7 @@ def cli_6_museum_manage_exhib_function(exhibition_name):
             cli_7_museum_list_requests_function(exhibition_name)
         # BACK
         elif choice == "0":
-            cli_5_museum_exhibition_list_function()
+            cli_5_museum_exhibition_list_function(museum_name)
         else: 
             print("invalid choice")
 
@@ -326,6 +329,7 @@ def cli_7_museum_new_request_function(exhibition_name):
         choice = input("> ")
         if 0 < int(choice) <= len(arts):
             create_request(exhibition_name, arts[int(choice)-1].id)
+            cli_6_museum_manage_exhib_function(exhibition_name)
         # BACK
         elif choice == "0":
             cli_6_museum_manage_exhib_function(exhibition_name)
@@ -336,9 +340,14 @@ def cli_7_museum_new_request_function(exhibition_name):
 def cli_7_museum_list_requests_print(exhibition_name):
     requests_list = get_requests_by_exhibition_name(exhibition_name)
 
-    print("ID\tArt ID\tOwner ID\tExhibition Name\tApproved")
+    print(" ")
+    print("Pending Requests")
+    print(" ")
+    print("ID\tArt ID\tOwner ID\tExhibition Name\t\tApproved")
     for request in requests_list:
-        print(f"{request.id}\t{request.art_id}\t{request.owner_id}\t{request.exhibition_name}\t{request.approved}")
+        print(f"{request.id}\t{request.art_id}\t{request.owner_id}\t\t{request.exhibition_name}\t{request.approved}")
+    print(" ")
+    print(" ")
 
     print("0: back")
 
@@ -352,4 +361,4 @@ def cli_7_museum_list_requests_function(exhibition_name):
             print("invalid choice")
 
 if __name__ == "__main__":
-    cli_4_museum_function()
+    cli_1_function()

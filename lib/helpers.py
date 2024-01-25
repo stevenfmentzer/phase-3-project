@@ -62,11 +62,16 @@ def get_all_art():
 
 ## Museum Class
         
-def get_all_museum():
+def get_all_museum():       
+    museum_names = []
+    count = 1
     museums = Museum.get_all()
     for museum in museums:
-        print(museum)
-    # return Museum.get_all()
+        if museum.name not in museum_names:
+            museum_names.append(museum.name)
+            print(f"{count}: {museum.name}")
+            count += 1
+    return museum_names
 
 
 def create_new_museum():
@@ -87,14 +92,21 @@ def get_all_exhibition():
         if exhibition.name not in exhibition_names:
             exhibition_names.append(exhibition.name)
             print(f"{count}: {exhibition.name}")
-            count =+ 1
+            count += 1
     return exhibition_names
 
-def create_exhibition(): 
+def create_exhibition(museum_name): 
     # Get input for exhibition details
+    museum_list =  Museum.get_by_name(museum_name)
     name = input("Enter the exhibition's name: ")
-    art_id = int(input("Enter the art ID: "))
-    museum_id = int(input("Enter the museum ID: "))
+    print("Enter the ID of selected artwork: ")
+    arts = Art.get_all()
+    count = 1
+    for art in arts: 
+        print(f"{count}: {art.name}")
+        count += 1
+    art_id = int(input("> "))
+    museum_id = museum_list[0].id
     start_date = input("Enter the start date (YYYY-MM-DD): ")
     end_date = input("Enter the end date (YYYY-MM-DD): ")
 
@@ -166,10 +178,13 @@ def create_request(exhibition_name, art_id):
     # create(cls, art_id, owner_id, exebition_id, approved)
     owner_id = Art.find_by_id(art_id).owner_id
     Request.create(art_id, owner_id, exhibition_name, False)
+    print("")
+    print(f"You successfully requested '{Art.find_by_id(art_id).name}' from {Owner.find_by_id(owner_id).name}!")
+    print("")
 
 def get_requests_by_exhibition_name(exhibition_name):
     exhibition = Exhibition.get_by_name(exhibition_name)
-    museum = Exhibition.get_by_museum_id(exhibition[0].musuem_id)
+    museum = Exhibition.get_by_museum_id(exhibition[0].museum_id)[0].id
     requests = Request.find_by_museum_id(museum)
     return requests
 
