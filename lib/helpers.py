@@ -32,7 +32,7 @@ def list_owner_arts(owner_id):
     for art in owner_arts:
         print(art)
     if not owner_arts:
-        print('Sorry, you have no arts to view!')
+        print(f'Sorry, {owner.name}, you have no arts to view!')
 
 def add_new_art(owner_id, owner_name):
     print(f"Adding a new art for owner: {owner_name}")
