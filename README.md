@@ -50,11 +50,13 @@ Add your Museum to the fastest growing art database and kick-off new exhibits by
     C: Create new exhibtions to show the world
     R: Look into all your exhibitions and what art owners have approved to loan you
     U: Change you exhibition name as you develop your show concept
-    D: NOT DONE Cancel your exhibition if
+    D: 
 
 ## Image Links
  ### CLI data schema flow chart: 
  The command line interface has a structured user iterface flow: https://imgur.com/a/hWRGxUm
+
+
+
  ### ERD Database Table: 
  The entity relationship database is illustrated here: https://imgur.com/a/KVTljOl
-
