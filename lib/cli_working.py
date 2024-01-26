@@ -30,17 +30,6 @@ from helpers import (
     find_request_by_id,
 )
 
-# list structure:
-# print("Please select an option:")
-# print("1. Owners")
-# print("2. Museums")
-# print("3. By Exhibition by name")
-# print("4: Create Exhibit")
-# print("5: Get all Exhibits")
-# print("6: Update an Exhibition")
-# print("0. Exit the program")
-
-
 selected_exhibition = None
 selected_museum = None
 
@@ -117,18 +106,30 @@ def cli_2_museum_function():
             cli_1_function()
         # 1. existing museum
         elif choice == "1":
+            os.system("clear")
             cli_3_existing_museum_function()
         # 2. create new museum
         elif choice == "2":
-            create_new_museum()
-            cli_2_museum_function()
+            os.system("clear")
+            cli_3_new_museum_function()
         else:
             print("Invalid choice")
 
 
-# def cli_3_existing_museum_print():
-#     pass
-
+def cli_3_new_museum_function():
+    museum_name = create_new_museum()
+    print(" ")
+    print(" ")
+    print("1: continue forward")
+    print("0: back")
+    while True:
+        choice = input("> ")
+        if choice == "0":
+            cli_2_museum_function()
+        if choice == "1":
+            cli_4_museum_function(museum_name)
+        else: 
+            print("Invalid choice")
 
 def cli_3_existing_museum_function():
     os.system("clear")
@@ -147,9 +148,9 @@ def cli_3_existing_museum_function():
 
 
 def cli_3_existing_owner_print():
-    print(
-        "Welcome Owner! Select an existing owner:"
-    )  # can delete as input is shown below
+    os.system("clear")
+    print("Welcome Owner! Select an existing owner:")  
+    # can delete as input is shown below
     list_owners()
 
     owner_id = input("Enter the ID of the owner you want to choose: ")
@@ -182,16 +183,14 @@ def cli_4_existing_owner_function(owner_name, owner_id):
         elif choice == "1":
             cli_5_owner_print(owner_id)
             break
-
         elif choice == "2":
             # view_loan_requests()
             cli_owner_request_1_function(owner_name, owner_id)
-
             break
-
         elif choice == "3":
+            os.system("clear")
+            print('Please chooose an exhibition')
             get_all_exhibition()
-            pass
         else:
             print("Invalid choice")
 
@@ -255,6 +254,7 @@ def cli_4_museum_print(museum_name):
 
 
 def cli_4_museum_function(museum_name):
+    os.system("clear")
     print(f"Welcome {museum_name} User!")
     cli_4_museum_print(museum_name)
     while True:
@@ -277,6 +277,7 @@ def cli_5_owner_exhibitions_print():
 
 
 def cli_5_owner_exhibitions_function(owner_name, owner_id):
+    os.system("clear")
     print("Which exhibition do you want to check:")
     exhibition_list = get_all_exhibition()
     while True:
@@ -307,6 +308,7 @@ def cli_5_owner_art_function():
 
 
 def cli_5_museum_exhibition_list_function(museum_name):
+    os.system("clear")
     print(f"Which {museum_name} exhibition do you want to manage?")
     exhibition_list = get_all_exhibition_by_museum(museum_name)
     while True:
@@ -328,11 +330,18 @@ def cli_5_museum_exhibition_list_function(museum_name):
 
 
 def cli_5_museum_create_exhib_function(museum_name):
+    os.system("clear")
     create_exhibition(museum_name)
     print(" ")
     print(" ")
-    cli_4_museum_function(museum_name)
-
+    print("0: back")
+    while True:
+        choice = input("> ")
+        # If choice is in range of options go to that choice
+        if choice == "0":
+            cli_4_museum_function(museum_name)
+        else: 
+            print("invalid choice")
 
 def cli_6_owner_request_print():
     pass
@@ -356,9 +365,8 @@ def cli_6_owner_new_art_function():
 
 
 def cli_6_owner_manage_exhib_function(exhibition_name, owner_id):
-    print(
-        f"You have chosen to view '{exhibition_name}'. You have \napproved the following artworks for loan in this show:"
-    )
+    os.system("clear")
+    print(f"You have chosen to view '{exhibition_name}'. You have \napproved the following artworks for loan in this show:")
     requests = get_requests_by_exhibition_name_owner_id(exhibition_name, owner_id)
     # If there are requests for that owner in the chosen exhibit, list them
     if requests:
@@ -372,14 +380,16 @@ def cli_6_owner_manage_exhib_function(exhibition_name, owner_id):
 
 def cli_6_museum_manage_exhib_print(exhibition_name):
     print("What would you like to do?")
-    print(f"1: See all confirmed artworks in {exhibition_name}.")
-    print(f"2: Request a new artwork for {exhibition_name}.")
+    print(f"1: See all confirmed artworks in {exhibition_name}")
+    print(f"2: Request a new artwork for {exhibition_name}")
     print("3: View pending loan requests.")
-    print("4: Update exhibtion title")
+    print("4: Update exhibition title")
+    print("5: Change exhibition dates")
     print("0: back")
 
 
 def cli_6_museum_manage_exhib_function(exhibition_name, museum_name):
+    os.system("clear")
     while True:
         cli_6_museum_manage_exhib_print(exhibition_name)
         choice = input("> ")
@@ -395,6 +405,8 @@ def cli_6_museum_manage_exhib_function(exhibition_name, museum_name):
             cli_7_museum_list_requests_function(exhibition_name, museum_name)
         if choice == "4":
             cli_7_museum_update_exhibition_function(exhibition_name, museum_name)
+        if choice == "5":
+            cli_7_museum_update_dates_function(exhibition_name, museum_name)
         # BACK
         elif choice == "0":
             cli_5_museum_exhibition_list_function(museum_name)
@@ -402,13 +414,29 @@ def cli_6_museum_manage_exhib_function(exhibition_name, museum_name):
             print("invalid choice")
 
 
-# Not needed
-# def cli_7_museum_update_exhibition_print(exhibition_name, museum_name):
-#     pass
+def cli_7_museum_update_dates_function(exhibition_name, museum_name):
+    update_exhibition_dates(exhibition_name)
+    print(" ")
+    print("0: back to exhibit details")
+    while True:
+        choice = input("> ")
+        if choice == "0":
+            cli_6_museum_manage_exhib_function(exhibition_name, museum_name)
+        else: 
+            print("invalid choice")
 
+    
 
 def cli_7_museum_update_exhibition_function(exhibition_name, museum_name):
     update_exhibition_name(exhibition_name)
+    print(" ")
+    print("0: back to exhibit details")
+    while True:
+        choice = input("> ")
+        if choice == "0":
+            cli_6_museum_manage_exhib_function(exhibition_name, museum_name)
+        else: 
+            print("invalid choice")
 
 
 def cli_7_museum_approved_requests_print(exhibition_name, museum_name):
@@ -416,6 +444,7 @@ def cli_7_museum_approved_requests_print(exhibition_name, museum_name):
 
 
 def cli_7_museum_approved_requests_function(exhibition_name, museum_name):
+    os.system("clear")
     from models.request import Request
 
     rows = get_requests_by_exhibition_name(exhibition_name)
@@ -439,6 +468,7 @@ def cli_7_museum_new_request_print(arts):
 
 
 def cli_7_museum_new_request_function(exhibition_name, museum_name):
+    os.system("clear")
     print("What artwork would you like to request?")
     arts = get_all_art()
     cli_7_museum_new_request_print(arts)
@@ -471,6 +501,7 @@ def cli_7_museum_list_requests_print(exhibition_name):
 
 
 def cli_7_museum_list_requests_function(exhibition_name, museum_name):
+    os.system("clear")
     cli_7_museum_list_requests_print(exhibition_name)
     while True:
         choice = input("> ")
@@ -532,7 +563,7 @@ def cli_owner_request_2_print(sql_rows, approved_bool):
 
 
 def cli_owner_request_2_print_result(result):
-    # os.system("clear")
+    os.system("clear")
     while True:
         if result:
             # print("Request ID:", result[0])

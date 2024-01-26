@@ -1,4 +1,5 @@
 # lib/helpers.py
+import os 
 from models.owner import Owner
 from models.museum import Museum
 from models.exhibition import Exhibition
@@ -78,7 +79,9 @@ def create_new_museum():
     name = input("Enter the museum's name: ")
     try:
         museum = Museum.create(name)
-        print(f'Success: {museum}')
+        os.system("clear")
+        print(f"Success: '{museum.name}' added to museum list")
+        return name
     except Exception as exc:
         print("Error creating museum: ", exc)
 
@@ -128,7 +131,11 @@ def create_exhibition(museum_name):
     # Create the exhibition with the provided details
     try:
         exhibition = Exhibition.create(name, art_id, museum_id, start_date, end_date)
-        print(f'Success: {exhibition}')
+        os.system("clear")
+        print(f'Success: {exhibition.name} was started!')
+        artwork = arts[art_id - 1]
+        owner = Owner.find_by_id(artwork.owner_id)
+        print(f"A request for '{artwork.name}' was sent to {owner.name}.")
     except Exception as exc:
         print("Error creating exhibition: ", exc)
 
@@ -163,15 +170,31 @@ def get_exhibition_by_name():
 
 
 def update_exhibition_name(exhibition_name):
-    new_name = input(f"What would you like to re-title {exhibition_name}? ")
+    os.system("clear")
+    new_name = input(f"What would you like to re-title '{exhibition_name}'? ")
     try:
         exhibitions = Exhibition.get_by_name(exhibition_name)
         for exhibition in exhibitions:
             exhibition.name = new_name
             exhibition.update_by_name()
-        print(f'Exhibition {exhibition_name} updated to: {new_name} for all matching instances')
+        print(f"Exhibition '{exhibition_name}' updated to: '{new_name}' for all matching instances")
     except Exception as exc:
         print("Error updating exhibition name: ", exc)
+
+def update_exhibition_dates(exhibition_name):
+    exhibition = Exhibition.get_by_name(exhibition_name)[0]
+    print(f"{exhibition_name} is currently set to run form: {exhibition.start_date} - {exhibition.end_date} ")
+    print(" ")
+    new_start = input("Please enter a new start date: ")
+    new_end = input("Please enter a new end date: ")
+    os.system("clear")
+    try:
+        exhibition.start_date = new_start
+        exhibition.end_date = new_end
+        exhibition.update_by_name()
+        print(f"Exhibition '{exhibition_name}' has been updated")
+    except Exception as exc:
+        print("Error updating exhibition dates: ", exc)
 
 
 
@@ -193,13 +216,6 @@ def update_exhibition_name(exhibition_name):
     # else:
     #     print(f'Employee {id_} not found')
 
-
-
-
-
-
-def update_exhibition_dates():
-    pass
 
 def update_exhibition_status():
     pass
