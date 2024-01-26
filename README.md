@@ -17,12 +17,14 @@ Add your Museum to the fastest growing art database and kick-off new exhibits by
 2. Navigate to base directory in your terminal and run the following code: 
 
     ```python lib/seed.py```    returns 'Seeded Database' if the database has been initialized properly
+   
+    ```pip install prettytable```
 
     ```python lib/cli_working.py```
 
-3. Enjoy the program!
+4. Enjoy the program!
 
-4. To end the program:
+5. To end the program:
 
 * Navigate back to the main page by entering '0'
 
