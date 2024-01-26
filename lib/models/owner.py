@@ -112,7 +112,7 @@ class Owner:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
-
+    
     @classmethod
     def instance_from_db(cls, row):
         """Return a Owner object having the attribute values from the table row."""
