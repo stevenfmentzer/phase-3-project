@@ -65,3 +65,11 @@ Add your Museum to the fastest growing art database and kick-off new exhibits by
 
 ![demo](./cli_flow.svg) 
 
+## Libraries Utilized
+
+1. SQLite
+2. OS
+3. PrettyTable
+4. Datetime
+5. Drawio
+6. dbdiagram.io
