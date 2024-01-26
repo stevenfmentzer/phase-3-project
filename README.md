@@ -3,7 +3,6 @@
 
 ### Track art collections, build exhibitions and request art loans to fill your show with the best available artwork
 
-![demo](./cli_flow.svg) 
 
 #### Use this database as an Art Collector: 
 
@@ -53,11 +52,16 @@ Add your Museum to the fastest growing art database and kick-off new exhibits by
     U: Change you exhibition name as you develop your show concept
     D: 
 
-## Image Links
- ### CLI data schema flow chart: 
- The command line interface has a structured user iterface flow: https://imgur.com/a/hWRGxUm
-
-
+## Data flow visualizations
 
  ### ERD Database Table: 
- The entity relationship database is illustrated here: https://imgur.com/a/KVTljOl
+ The entity relationship database is illustrated here: 
+
+![cli](./arts_ERD.png)
+
+
+ ### CLI data schema flow chart: 
+ The command line interface has a structured user iterface flow: 
+
+![demo](./cli_flow.svg) 
+
