@@ -1,6 +1,7 @@
 # lib/cli.py
 
 import os
+from prettytable import PrettyTable
 
 from helpers import (
     exit_program,
@@ -28,6 +29,7 @@ from helpers import (
     get_all_not_approved_requests_by_owner_id,
     get_all_request_details_by_request_id,
     find_request_by_id,
+    edit_art,
 )
 
 selected_exhibition = None
@@ -39,6 +41,7 @@ def cli_1_print():
     print("0. Exit program")
     print("1. Owners")
     print("2. Museums")
+
 
 def cli_1_function():
     os.system("clear")
@@ -63,7 +66,8 @@ def cli_2_owner_print():
     print("1. existing owner")
     print("2. create new owner")
 
-def cli_2_owner_function(): 
+
+def cli_2_owner_function():
     os.system("clear")
 
     print("Welcome, Owner!")
@@ -128,8 +132,9 @@ def cli_3_new_museum_function():
             cli_2_museum_function()
         if choice == "1":
             cli_4_museum_function(museum_name)
-        else: 
+        else:
             print("Invalid choice")
+
 
 def cli_3_existing_museum_function():
     os.system("clear")
@@ -149,7 +154,7 @@ def cli_3_existing_museum_function():
 
 def cli_3_existing_owner_print():
     os.system("clear")
-    print("Welcome Owner! Select an existing owner:")  
+    print("Welcome Owner! Select an existing owner:")
     # can delete as input is shown below
     list_owners()
 
@@ -189,7 +194,7 @@ def cli_4_existing_owner_function(owner_name, owner_id):
             break
         elif choice == "3":
             os.system("clear")
-            print('Please chooose an exhibition')
+            print("Please chooose an exhibition")
             get_all_exhibition()
         else:
             print("Invalid choice")
@@ -206,7 +211,8 @@ def cli_5_owner_print(owner_id):
         print("0. Back to previous menu")
         print("1. View all arts")
         print("2. Add new art")
-        print("3. delete art")
+        print("3. Edit art")
+        print("4. Delete art")
         choice = input("> ")
 
         if choice == "0":
@@ -218,6 +224,9 @@ def cli_5_owner_print(owner_id):
             add_new_art(owner_id, owner_name)
             list_owner_arts(owner_id)
         elif choice == "3":
+            edit_art(owner_id, owner_name)
+            list_owner_arts(owner_id)
+        elif choice == "4":
             list_owner_arts(owner_id)
             delete_art()
             pass
@@ -340,8 +349,9 @@ def cli_5_museum_create_exhib_function(museum_name):
         # If choice is in range of options go to that choice
         if choice == "0":
             cli_4_museum_function(museum_name)
-        else: 
+        else:
             print("invalid choice")
+
 
 def cli_6_owner_request_print():
     pass
@@ -366,7 +376,9 @@ def cli_6_owner_new_art_function():
 
 def cli_6_owner_manage_exhib_function(exhibition_name, owner_id):
     os.system("clear")
-    print(f"You have chosen to view '{exhibition_name}'. You have \napproved the following artworks for loan in this show:")
+    print(
+        f"You have chosen to view '{exhibition_name}'. You have \napproved the following artworks for loan in this show:"
+    )
     requests = get_requests_by_exhibition_name_owner_id(exhibition_name, owner_id)
     # If there are requests for that owner in the chosen exhibit, list them
     if requests:
@@ -422,10 +434,9 @@ def cli_7_museum_update_dates_function(exhibition_name, museum_name):
         choice = input("> ")
         if choice == "0":
             cli_6_museum_manage_exhib_function(exhibition_name, museum_name)
-        else: 
+        else:
             print("invalid choice")
 
-    
 
 def cli_7_museum_update_exhibition_function(exhibition_name, museum_name):
     update_exhibition_name(exhibition_name)
@@ -435,7 +446,7 @@ def cli_7_museum_update_exhibition_function(exhibition_name, museum_name):
         choice = input("> ")
         if choice == "0":
             cli_6_museum_manage_exhib_function(exhibition_name, museum_name)
-        else: 
+        else:
             print("invalid choice")
 
 
@@ -547,14 +558,27 @@ def cli_owner_request_1_function(owner_name, owner_id):
 ###############################################
 def cli_owner_request_2_print(sql_rows, approved_bool):
     os.system("clear")
+    pt = PrettyTable()
+    pt.align = "l"
+
     if approved_bool:
         print("List of Requests :: ")
     else:
         print("List of Requests needs to be Approved:: ")
 
-    ([print(row[0], " | ", row[3]) for row in sql_rows]) if sql_rows else print(
-        "No pending requests!"
-    )
+    if sql_rows:
+        pt.field_names = ["ID", "Exhibition", "Status"]
+        for row in sql_rows:
+            pt.add_row(
+                [row[0], row[3], "Approved" if row[4] == 1 else "Awaiting approval"]
+            )
+        print(pt)
+    else:
+        print("No pending requests!")
+
+    # ([print(row[0], " | ", row[3]) for row in sql_rows]) if sql_rows else print(
+    #     "No pending requests!"
+    # )
 
     print("")
     print("Enter the ID of the request to see details:")
@@ -564,24 +588,37 @@ def cli_owner_request_2_print(sql_rows, approved_bool):
 
 def cli_owner_request_2_print_result(result):
     os.system("clear")
+    pt = PrettyTable()
+    pt.align = "l"
+
     while True:
         if result:
-            # print("Request ID:", result[0])
-            print("Exhibition Name:", result[1])
-            print(f'Status: {("Approved" if result[2] == 1 else "Awaiting approval")}')
-            print("Owner Name:", result[3])
-            print("Art Name:", result[4])
-            print("Artist:", result[5])
-            print("Museum Name:", result[6])
-            print("Start Date:", result[7])
-            print("End Date:", result[8])
+            pt.add_row(["Exhibition Name:", result[1]])
+            pt.add_row(
+                ["Status:", "Approved" if result[2] == 1 else "Awaiting approval"]
+            )
+            pt.add_row(["Owner Name:", result[3]])
+            pt.add_row(["Art Name:", result[4]])
+            pt.add_row(["Artist:", result[5]])
+            pt.add_row(["Museum Name:", result[6]])
+            pt.add_row(["Start Date:", result[7]])
+            pt.add_row(["End Date:", result[8]])
+            print(pt)
+            # print("Exhibition Name:", result[1])
+            # print(f'Status: {("Approved" if result[2] == 1 else "Awaiting approval")}')
+            # print("Owner Name:", result[3])
+            # print("Art Name:", result[4])
+            # print("Artist:", result[5])
+            # print("Museum Name:", result[6])
+            # print("Start Date:", result[7])
+            # print("End Date:", result[8])
         else:
             print("Request not found!")
 
         print("")
 
         if result and result[2] != 1:
-            print("1: To Approve the requst")
+            print("1: Approve the requst")
 
         print("0: Back to main menu")
 
