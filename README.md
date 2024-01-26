@@ -3,6 +3,7 @@
 
 ### Track art collections, build exhibitions and request art loans to fill your show with the best available artwork
 
+![demo](./cli_flow.svg) 
 
 #### Use this database as an Art Collector: 
 
