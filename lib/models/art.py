@@ -1,6 +1,5 @@
 from models.__init__ import CURSOR, CONN
 from models.owner import Owner
-import ipdb
 
 class Art:
     all = {}
